@@ -1,5 +1,5 @@
 ---
-title: Foo
+title: Drag demo
 nav:
   path: /components
   title: components
@@ -10,15 +10,12 @@ group:
   order: 控制分组顺序，数字越小越靠前，默认以路径长度和字典序排序
 ---
 
-## Foo
+## HTMT Drag
 
-Demo:
+### Demo
 
-```tsx
-import React from 'react';
-import { Foo } from 'demo-doc';
+<code src="./components/HtmlDrag/HtmlDrag.jsx" title='基于h5的的拖拽' desc='不能用于移动端'></code>
 
-export default () => <Foo title="First Demo" />;
-```
+## 参考资料
 
-More skills for writing demo: https://d.umijs.org/guide/basic#write-component-demo
+[HTML 拖放 API](https://developer.mozilla.org/zh-CN/docs/Web/API/HTML_Drag_and_Drop_API)
