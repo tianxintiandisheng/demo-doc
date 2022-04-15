@@ -15,7 +15,7 @@ features:
   - icon: https://gw.alipayobjects.com/zos/bmw-prod/d1ee0c6f-5aed-4a45-a507-339a4bfe076c/k7bjsocq_w144_h144.png
     title: Feature 3
     desc: Balabala
-footer: Open-source MIT Licensed | Copyright © 2020<br />Powered by [dumi](https://d.umijs.org)
+footer: <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">浙ICP备2022009054号-1</a><br />Powered by [dumi](https://d.umijs.org)
 ---
 
 ## Hello demo-doc!
