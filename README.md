@@ -14,12 +14,6 @@ $ npm i
 $ npm start
 ```
 
-提交代码
-
-```bash
-$ npm run cz
-```
-
 打包文档站点项目
 
 ```bash
@@ -36,4 +30,32 @@ Build library via `father-build`,
 
 ```bash
 $ npm run build
+```
+
+## 规范
+
+### 提交代码
+
+```bash
+$ npm run cz
+```
+
+### CHANGELOG
+
+conventional-changelog-cli 就是生成 CHANGELOG 的工具，我们首先来安装一下：
+
+```bash
+$ npm install -g conventional-changelog-cli
+```
+
+生成 CHANGELOG 文件
+
+```bash
+conventional-changelog -p angular -i CHANGELOG.md -s
+```
+
+or
+
+```bash
+npm run changelog
 ```

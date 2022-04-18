@@ -1,7 +1,13 @@
 ---
+title: Foo
 nav:
-  title: Components
   path: /components
+  title: components
+  order: 控制分组顺序，数字越小越靠前，默认以路径长度和字典序排序
+group:
+  path: /components/Foo
+  title: 自定义分组名称
+  order: 控制分组顺序，数字越小越靠前，默认以路径长度和字典序排序
 ---
 
 ## Foo
