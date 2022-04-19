@@ -14,12 +14,4 @@ module.exports = {
     { type: 'ci', section: 'CI', hidden: true },
     { type: 'revert', section: '回滚', hidden: true },
   ],
-  //需要server-version更新版本号的文件
-  bumpFiles: [
-    {
-      filename: 'package.json',
-      // The `json` updater assumes the version is available under a `version` key in the provided JSON document.
-      type: 'json',
-    },
-  ],
 };
