@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.10](https://github.com/tianxintiandisheng/demo-doc/compare/v1.1.9...v1.1.10) (2022-04-20)
+
+### 🚀 Chore | 构建/工程依赖/工具
+
+- changelog 配置修改 ([06492b4](https://github.com/tianxintiandisheng/demo-doc/commit/06492b46b41c558c3fc0ac42596330d50ac0abef))
+
 ### [1.1.9](https://github.com/tianxintiandisheng/demo-doc/compare/v1.1.8...v1.1.9) (2022-04-20)
 
 ### 🚀 Chore | 构建/工程依赖/工具
