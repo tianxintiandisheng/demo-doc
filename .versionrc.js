@@ -1,8 +1,8 @@
 module.exports = {
   skip: {
-    bump: true, // 跳过升级版本操作
+    bump: false, // 跳过升级版本操作
     changelog: false, // 基于commits生成ChangeLog文档
-    commit: true, // 提交一个commit，包含ChangeLog和版本变更的文件
+    commit: false, // 提交一个commit，包含ChangeLog和版本变更的文件
     tag: true, // 跳过打tag操作
   },
   //types为Conventional Commits标准中定义，目前支持
