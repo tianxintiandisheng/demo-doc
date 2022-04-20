@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.10](https://github.com/tianxintiandisheng/demo-doc/compare/v1.1.9...v1.1.10) (2022-04-20)
+
+### 🚀 Chore | 构建/工程依赖/工具
+
+- changelog 配置修改 ([06492b4](https://github.com/tianxintiandisheng/demo-doc/commit/06492b46b41c558c3fc0ac42596330d50ac0abef))
+
+### [1.1.9](https://github.com/tianxintiandisheng/demo-doc/compare/v1.1.8...v1.1.9) (2022-04-20)
+
+### 🚀 Chore | 构建/工程依赖/工具
+
+- **setter:** commitlint rule 配置 ([a095803](https://github.com/tianxintiandisheng/demo-doc/commit/a09580364799e716150b10cca1a3707bde4828b4))
+
+### [1.1.8](https://github.com/tianxintiandisheng/demo-doc/compare/v1.1.7...v1.1.8) (2022-04-20)
+
+### ✏️ Documentation | 文档
+
+- **changelog:** 生成全量 changelog 数据 ([6b8c474](https://github.com/tianxintiandisheng/demo-doc/commit/6b8c474e82f4b45ef9cc8add6a4b66d64001ed82))
+
+### 🚀 Chore | 构建/工程依赖/工具
+
+- **rc:** 配置修改 ([2f3e6e8](https://github.com/tianxintiandisheng/demo-doc/commit/2f3e6e896d582af076b36623404890013eb8cbd3))
+- **versionrc.js:** 更新 standard-version type 配置 ([38cd421](https://github.com/tianxintiandisheng/demo-doc/commit/38cd4216472ade0b79c8e6cae9e13df9c3c22237))
+
+### 📦‍ Build System | 打包构建
+
+- **test:** 配置修改 ([4c86e5a](https://github.com/tianxintiandisheng/demo-doc/commit/4c86e5a95aeb22d3319ceac48d2dd97641b697be))
+
 ### [1.1.7](https://github.com/tianxintiandisheng/demo-doc/compare/v1.1.6...v1.1.7) (2022-04-19)
 
 ### 配置项
