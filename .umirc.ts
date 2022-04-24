@@ -11,4 +11,14 @@ export default defineConfig({
   dynamicImport: {
     // loading: '@/Loading',
   },
+  extraBabelPlugins: [
+    [
+      'import',
+      {
+        libraryName: 'antd',
+        libraryDirectory: 'es',
+        style: true,
+      },
+    ],
+  ],
 });
