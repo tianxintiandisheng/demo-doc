@@ -35,7 +35,11 @@
     ]
   },
   "dependencies": {
+    "@formily/antd": "^2.1.0",
+    "@formily/core": "^2.1.0",
+    "@formily/react": "^2.1.0",
     "antd": "^4.20.0",
+    "moment": "^2.29.3",
     "react": "^16.12.0 || ^17.0.0",
     "react-beautiful-dnd": "^13.1.0"
   },
