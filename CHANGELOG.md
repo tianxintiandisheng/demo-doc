@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/tianxintiandisheng/demo-doc/compare/v1.1.9...v1.2.0) (2022-05-09)
+
+### 🚀 Chore | 构建/工程依赖/工具
+
+- changelog 配置修改 ([06492b4](https://github.com/tianxintiandisheng/demo-doc/commit/06492b46b41c558c3fc0ac42596330d50ac0abef))
+- **release:** 1.1.10 ([6cc0a9f](https://github.com/tianxintiandisheng/demo-doc/commit/6cc0a9fc385d556406e8aa6803dc50b9f40ef6e4))
+
+### ✏️ Documentation | 文档
+
+- **root:** changelog 格式统一 ([f0c024d](https://github.com/tianxintiandisheng/demo-doc/commit/f0c024d7db29a3c64a59452345124d483c19d233))
+
+### ✨ Features | 新功能
+
+- **formily:** 添加 Formily 表单设计器 基础 ([1e9e6e1](https://github.com/tianxintiandisheng/demo-doc/commit/1e9e6e1e48b8de79e6f122c678b823730769670e))
+- **formily:** 添加 Formily 的基础组件 ([641737d](https://github.com/tianxintiandisheng/demo-doc/commit/641737dc9c36a9356dd4c44eec7eb891d0ee53fa))
+- **root:** 添加 Formily 表单设计器 相关依赖 ([18db006](https://github.com/tianxintiandisheng/demo-doc/commit/18db006b877dda174078804905c10d4354a5643d))
+- **root:** 添加 antd；antd 样式按需加载 ([b2feef4](https://github.com/tianxintiandisheng/demo-doc/commit/b2feef41d1118362754e10e6ae573f7717b371f5))
+- **root:** 引入 formly 的相关依赖 ([92862fd](https://github.com/tianxintiandisheng/demo-doc/commit/92862fdf3d31b38235e07bfe7421335bc57cc968))
+- **utils:** js 中浮点数的计算（求和） ([e22b8b5](https://github.com/tianxintiandisheng/demo-doc/commit/e22b8b5589aa1cf57952a746c62dc05f77d83be7))
+
 ### [1.1.10](https://github.com/tianxintiandisheng/demo-doc/compare/v1.1.9...v1.1.10) (2022-04-20)
 
 ### 🚀 Chore | 构建/工程依赖/工具
