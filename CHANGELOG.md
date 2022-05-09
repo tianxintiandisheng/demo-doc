@@ -4,10 +4,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [1.2.0](https://github.com/tianxintiandisheng/demo-doc/compare/v1.1.9...v1.2.0) (2022-05-09)
 
-### 🚀 Chore | 构建/工程依赖/工具
+### 👷 Continuous Integration | CI 配置
 
 - changelog 配置修改 ([06492b4](https://github.com/tianxintiandisheng/demo-doc/commit/06492b46b41c558c3fc0ac42596330d50ac0abef))
-- **release:** 1.1.10 ([6cc0a9f](https://github.com/tianxintiandisheng/demo-doc/commit/6cc0a9fc385d556406e8aa6803dc50b9f40ef6e4))
 
 ### ✏️ Documentation | 文档
 
@@ -24,13 +23,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [1.1.10](https://github.com/tianxintiandisheng/demo-doc/compare/v1.1.9...v1.1.10) (2022-04-20)
 
-### 🚀 Chore | 构建/工程依赖/工具
+### 👷 Continuous Integration | CI 配置
 
 - changelog 配置修改 ([06492b4](https://github.com/tianxintiandisheng/demo-doc/commit/06492b46b41c558c3fc0ac42596330d50ac0abef))
 
 ### [1.1.9](https://github.com/tianxintiandisheng/demo-doc/compare/v1.1.8...v1.1.9) (2022-04-20)
 
-### 🚀 Chore | 构建/工程依赖/工具
+### 👷 Continuous Integration | CI 配置
 
 - **setter:** commitlint rule 配置 ([a095803](https://github.com/tianxintiandisheng/demo-doc/commit/a09580364799e716150b10cca1a3707bde4828b4))
 
@@ -40,7 +39,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 - **changelog:** 生成全量 changelog 数据 ([6b8c474](https://github.com/tianxintiandisheng/demo-doc/commit/6b8c474e82f4b45ef9cc8add6a4b66d64001ed82))
 
-### 🚀 Chore | 构建/工程依赖/工具
+### 👷 Continuous Integration | CI 配置
 
 - **rc:** 配置修改 ([2f3e6e8](https://github.com/tianxintiandisheng/demo-doc/commit/2f3e6e896d582af076b36623404890013eb8cbd3))
 - **versionrc.js:** 更新 standard-version type 配置 ([38cd421](https://github.com/tianxintiandisheng/demo-doc/commit/38cd4216472ade0b79c8e6cae9e13df9c3c22237))
@@ -51,19 +50,19 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [1.1.7](https://github.com/tianxintiandisheng/demo-doc/compare/v1.1.6...v1.1.7) (2022-04-19)
 
-### 配置项
+### 👷 Continuous Integration | CI 配置
 
 - 更新 standard-version 配置 ([8f95c83](https://github.com/tianxintiandisheng/demo-doc/commit/8f95c83e3c051d28bdc7c2bdb686bfac9567c5b8))
 
 ### [1.1.5](https://github.com/tianxintiandisheng/demo-doc/compare/v1.1.4...v1.1.5) (2022-04-19)
 
-### 文档
+### ✏️ Documentation | 文档
 
 - **changelog:** changelog 初始化 ([77f9a99](https://github.com/tianxintiandisheng/demo-doc/commit/77f9a99851c2385a7ab98f8362394bcea4aef730))
 
 ### [1.1.0](https://github.com/tianxintiandisheng/demo-doc/compare/e550ab230d52a62f9595a0dd6e6e5ff80b37aba7...v1.1.0) (2022-04-19)
 
-### Features
+### ✨ Features | 新功能
 
 - 添加生成 changelog 的命令 ([5d322a3](https://github.com/tianxintiandisheng/demo-doc/commit/5d322a3bee774f66fbfc479be4f6c43c37b54035))
 - **dragdemo:** 添加 基于 h5 的的拖拽 demo ([62fa182](https://github.com/tianxintiandisheng/demo-doc/commit/62fa1823bddf60eba2866a96030f0d8135c6c9a1))
