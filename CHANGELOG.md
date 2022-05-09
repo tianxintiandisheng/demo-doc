@@ -41,7 +41,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 - **changelog:** changelog 初始化 ([77f9a99](https://github.com/tianxintiandisheng/demo-doc/commit/77f9a99851c2385a7ab98f8362394bcea4aef730))
 
-# [1.1.0](https://github.com/tianxintiandisheng/demo-doc/compare/e550ab230d52a62f9595a0dd6e6e5ff80b37aba7...v1.1.0) (2022-04-19)
+### [1.1.0](https://github.com/tianxintiandisheng/demo-doc/compare/e550ab230d52a62f9595a0dd6e6e5ff80b37aba7...v1.1.0) (2022-04-19)
 
 ### Features
 
