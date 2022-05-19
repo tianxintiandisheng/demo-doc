@@ -5,8 +5,8 @@ nav:
   title: Formily
   order: 控制分组顺序，数字越小越靠前，默认以路径长度和字典序排序
 group:
-  path: /FormilyDemo
-  title: Formily
+  path: /FormilyDesignable
+  title: Designable
   order: 控制分组顺序，数字越小越靠前，默认以路径长度和字典序排序
 ---
 
