@@ -14,4 +14,4 @@ group:
 
 ### Demo
 
-<code src="./FloatNumSum.tsx" title='浮点数的求和' desc='浮点数的求和'></code>
+<code src="./FloatNumSum.tsx" title='浮点数的求和' desc='浮点数的求和,sumFloatNum方法不支持进位'></code>
