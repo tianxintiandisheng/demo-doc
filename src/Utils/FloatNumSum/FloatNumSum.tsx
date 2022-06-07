@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { InputNumber } from 'antd';
+import NP from 'number-precision';
 import styles from './FloatNumSum.less';
 
 export interface FloatNumSumProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -38,9 +39,13 @@ const FloatNumSum = (props: FloatNumSumProps) => {
       <InputNumber min={0} value={floatNumList[1]} onChange={(e) => onChange(e, 1)} />
       <InputNumber min={0} value={floatNumList[2]} onChange={(e) => onChange(e, 2)} />
       <h3></h3>
-      <h3>javascriot的计算结果:</h3>
+      <h3>原生javascriot的计算结果:</h3>
       <div>{`${floatNumList[0]}+${floatNumList[1]}+${floatNumList[2]}=${sumJs()}`}</div>
-      <h3>优化后的计算结果:</h3>
+      <h3>number-precision的计算结果:</h3>
+      <div>{`${floatNumList[0]}+${floatNumList[1]}+${floatNumList[2]}=${NP.plus(
+        ...floatNumList,
+      )}`}</div>
+      <h3>自定义方法的计算结果(不支持进位,位数要相同,仅做示意):</h3>
       <div>{`${floatNumList[0]}+${floatNumList[1]}+${floatNumList[2]}=${sum()}`}</div>
     </div>
   );
