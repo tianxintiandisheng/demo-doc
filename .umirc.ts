@@ -32,4 +32,14 @@ export default defineConfig({
       path: 'https://github.com/tianxintiandisheng/demo-doc',
     },
   ],
+  chainWebpack(config) {
+    // 解析html文件
+    config.module
+      .rule('html-loader')
+      .test(/\.html$/)
+      .exclude.end()
+      .use('html-loader')
+      .loader('html-loader');
+  },
+  // webpack5:{},
 });
