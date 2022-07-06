@@ -105,8 +105,8 @@ export const refreshItem = (detailList: DetailItem[]) => {
   let deepCopyData = JSON.parse(JSON.stringify(detailList));
   const data = deepCopyData.map((i: DetailItem) => {
     if (i.type === 'look') {
-      console.log('此时查看的value', i.value + 1);
-      message.success(`刷新成功,此时的value为${i.value + 1}`);
+      console.log('刷新成功,此时的查看的value为', i.value + 1);
+      message.success(`刷新成功,此时的查看的value为${i.value + 1}`);
       return {
         ...i,
         value: i.value + 1,

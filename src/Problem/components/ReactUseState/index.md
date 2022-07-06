@@ -18,7 +18,9 @@ group:
 
 复现路径： 点击按钮‘ New Collection’》点击‘cancel’》点击按钮‘ New Collection’ 问题描述： 第二次的弹窗内表单的值没有被回填
 
-<code src="./ReactUseState.tsx" title='基于react-beautiful-dnd的的拖拽' desc='无样式，仅有逻辑'></code>
+<code src="./ReactUseState.tsx" title='useState' desc='弹窗在组件内渲染'></code>
+
+<code src="./components/ReactUseStateOutside/ReactUseStateOutside.tsx" title='useState' desc='弹窗为单独的组件'></code>
 
 ## 参考资料
 
