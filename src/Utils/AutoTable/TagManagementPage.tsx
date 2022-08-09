@@ -35,7 +35,8 @@ const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOu
   },
 );
 
-const TagManagementPage = () => {
+const TagManagementPage = (props: any) => {
+  const { type = 'Dom' } = props;
   const onChange = (key: string) => {
     window.console.log(key);
   };
@@ -45,7 +46,7 @@ const TagManagementPage = () => {
         <Tabs defaultActiveKey="1" onChange={onChange} destroyInactiveTabPane>
           <TabPane tab="用户列表" key="1">
             <div className={styles.tableBox}>
-              <TagTable />
+              <TagTable type={type} />
             </div>
           </TabPane>
           <TabPane tab="Tab2" key="2">

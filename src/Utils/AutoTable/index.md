@@ -12,11 +12,33 @@ group:
 
 ## getDomHeight
 
-### Demo
+### Demo-1
 
-<code src="./TagManagementPage.tsx" title='自适应高度的table' desc='使用js原生方法获取高度(建议新建窗口查看此demo)'></code>
+```jsx
+/**
+ * title: 自适应高度的table
+ * desc: 使用js原生方法获取高度(建议新建窗口查看此demo)
+ */
+import React from 'react';
+import TagManagementPage from './index';
+
+export default () => <TagManagementPage type="Dom" />;
+```
 
 ---
+
+### Demo-2
+
+```jsx
+/**
+ * title: 自适应高度的table
+ * desc: 使用js原生方法获取高度(只能在新建窗口中查看此demo)
+ */
+import React from 'react';
+import TagManagementPage from './index';
+
+export default () => <TagManagementPage type="DOMRect" />;
+```
 
 ## 参考资料
 

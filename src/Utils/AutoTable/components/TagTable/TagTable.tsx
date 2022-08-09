@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-filename-extension */
 import { Button, Table, Space, Alert, Typography, Divider, Input, Select, Modal } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { getResidueHeightByDom, getResidueHeightByDOMRect } from '../../utils';
 import styles from './TagTable.less';
 
 type Gender = 'male' | 'female';
@@ -55,10 +56,12 @@ const columns: ColumnsType<DataType> = [
   },
 ];
 
-export interface TagTableProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface TagTableProps extends React.HTMLAttributes<HTMLDivElement> {
+  type: 'Dom' | 'DOMRect' | 'Ref';
+}
 
 const TagTable = (props: TagTableProps) => {
-  const { className = '', ...otherProps } = props;
+  const { className = '', type, ...otherProps } = props;
   const [status, setStatus] = useState<Gender | ''>('');
   const [residueHeight, setResidueHeight] = useState<number>(200);
   const [tagList, setTagList] = useState<any[]>([]);
@@ -68,33 +71,19 @@ const TagTable = (props: TagTableProps) => {
   const count = 28;
   const inputEl = useRef(null);
 
-  const getResidueHeight = () => {
-    const bodyHeight = document.body.offsetHeight; // 网页可见区域高 (包括边线的高)
-    const headerHeight = 64; // header高度
-    const breadcrumbHeight = 36 + 16 * 2; // 面包屑高度(包括间距)
-    const tabHeight = 46 + 16; // tab高度(包括间距)
-    const actionHeight = (document.getElementById('action') as HTMLElement).offsetHeight; // 操作区域高度
-    const actionMarginBottomHeight = 16; // 操作区域-底部外边距
-    const tableHeaderHeight = 55; // table-表头高度
-    const paginationHeight = 32 + 16 * 2; // 分页器高度(包括间距)
-    const contentPadding = 24 * 3; // content区域的padding
-    const residueHeight =
-      bodyHeight -
-      headerHeight -
-      breadcrumbHeight -
-      tabHeight -
-      actionHeight -
-      tableHeaderHeight -
-      actionMarginBottomHeight -
-      paginationHeight -
-      contentPadding;
-    return residueHeight;
-  };
-
-  useEffect(() => {
-    //  const headerHeigt= document.getElementById("header").offsetHeight;
-    //  console.log(headerHeigt);
-    setResidueHeight(getResidueHeight());
+  useLayoutEffect(() => {
+    let getResidueHeight = getResidueHeightByDom;
+    switch (type) {
+      case 'Dom':
+        getResidueHeight = getResidueHeightByDom;
+        setResidueHeight(getResidueHeight());
+        break;
+      case 'DOMRect':
+        getResidueHeight = getResidueHeightByDOMRect;
+        setTimeout(() => setResidueHeight(getResidueHeight()), 0); // 获取距离顶部距离的时候央视不对,加个定时器
+      default:
+        break;
+    }
 
     queryTagList();
     return Modal.destroyAll();
@@ -135,7 +124,7 @@ const TagTable = (props: TagTableProps) => {
         <div className={styles.actionBox}>
           <Space>
             <Button type="primary" onClick={() => {}}>
-              新建标签
+              新建用户
             </Button>
             <Button
               onClick={() => {
