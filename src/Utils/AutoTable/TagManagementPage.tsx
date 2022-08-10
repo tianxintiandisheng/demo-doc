@@ -68,7 +68,7 @@ const TagManagementPage = (props: any) => {
           <div className="logo" />
           <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} items={items1} />
         </Header>
-        <Layout>
+        <Layout hasSider>
           <Sider width={200} className="site-layout-background">
             <Menu
               mode="inline"
