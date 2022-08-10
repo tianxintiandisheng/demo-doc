@@ -50,12 +50,10 @@ const TagManagementPage = (props: any) => {
             </div>
           </TabPane>
           <TabPane tab="Tab2" key="2">
-            <div className={styles.tableBox}>{/* <TagList /> */}</div>
+            <div className={styles.tableBox}>2222</div>
           </TabPane>
           <TabPane tab="Tab3" key="3">
-            <div className={styles.tableBox}>
-              {/* <ActionRecordsTable downloadType="IMPORT" /> */}
-            </div>
+            <div className={styles.tableBox}>222</div>
           </TabPane>
         </Tabs>
       </div>
@@ -89,7 +87,10 @@ const TagManagementPage = (props: any) => {
               style={{
                 padding: 24,
                 margin: 0,
-                minHeight: 280,
+                // headerHeight = 64; // header高度
+                // breadcrumbHeight = 36 + 16 * 2 (68px); // 面包屑高度(包括间距)
+                // contentBottomPadding = 24; // content区域的底部padding
+                minHeight: 'calc(100vh - 64px - 68px - 24px)',
                 background: '#fff',
               }}
             >

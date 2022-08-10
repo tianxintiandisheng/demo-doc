@@ -1,8 +1,12 @@
 /* eslint-disable react/jsx-filename-extension */
 import { Button, Table, Space, Alert, Typography, Divider, Input, Select, Modal } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
-import { getResidueHeightByDom, getResidueHeightByDOMRect } from '../../utils';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import {
+  getResidueHeightByDom,
+  getResidueHeightByDOMRect,
+  getResidueHeightByRef,
+} from '../../utils';
 import styles from './TagTable.less';
 
 type Gender = 'male' | 'female';
@@ -62,51 +66,48 @@ export interface TagTableProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const TagTable = (props: TagTableProps) => {
   const { className = '', type, ...otherProps } = props;
-  const [status, setStatus] = useState<Gender | ''>('');
-  const [residueHeight, setResidueHeight] = useState<number>(200);
+  const [residueHeight, setResidueHeight] = useState<number>(500);
   const [tagList, setTagList] = useState<any[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
   const [loading, setLoading] = useState(false);
-  const count = 28;
+  const count = 22;
+
   const inputEl = useRef(null);
 
-  useLayoutEffect(() => {
-    let getResidueHeight = getResidueHeightByDom;
+  useEffect(() => {
     switch (type) {
       case 'Dom':
-        getResidueHeight = getResidueHeightByDom;
-        setResidueHeight(getResidueHeight());
+        setResidueHeight(getResidueHeightByDom());
         break;
       case 'DOMRect':
-        getResidueHeight = getResidueHeightByDOMRect;
-        setTimeout(() => setResidueHeight(getResidueHeight()), 0); // 获取距离顶部距离的时候央视不对,加个定时器
+        setResidueHeight(getResidueHeightByDOMRect());
+      case 'Ref':
+        setResidueHeight(getResidueHeightByRef(inputEl.current as unknown as HTMLElement));
       default:
         break;
     }
-
     queryTagList();
     return Modal.destroyAll();
   }, []);
   const queryTagList = () => {
     setLoading(true);
-
     const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat,picture&noinfo`;
     fetch(fakeDataUrl)
       .then((res) => {
         return res.json();
       })
       .then((res) => {
-        // const newData = data.concat(res.results);
         setTagList(res.results);
+        // setTagList([]);
         setLoading(false);
-        console.log('res', res);
       });
   };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[], newSelectedRows: DataType[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
     setSelectedRows(newSelectedRows);
+    window.console.log(selectedRows);
   };
 
   const rowSelection = {
@@ -116,7 +117,7 @@ const TagTable = (props: TagTableProps) => {
   const hasSelected = selectedRowKeys.length > 0;
   return (
     <div className={`${styles.root} ${className}`} {...otherProps}>
-      <div className={styles.header} id="action" ref={inputEl}>
+      <div className={styles.header} id="action">
         <Title level={3}>
           <Text>content-</Text>
           <Text>用户列表</Text>
@@ -208,6 +209,7 @@ const TagTable = (props: TagTableProps) => {
       </div>
 
       <Table
+        ref={inputEl}
         rowKey="email"
         loading={loading}
         scroll={{
@@ -218,6 +220,7 @@ const TagTable = (props: TagTableProps) => {
         columns={columns}
         dataSource={tagList}
         pagination={{
+          hideOnSinglePage: false,
           showSizeChanger: true,
           showQuickJumper: true,
           showTotal: (totalNum) => `共 ${totalNum} 条`,
