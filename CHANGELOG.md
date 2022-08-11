@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/tianxintiandisheng/demo-doc/compare/v1.3.0...v1.4.0) (2022-08-11)
+
+### 🐛 Bug Fixes | Bug 修复
+
+- **utils:** layout 的状态更新导致样式闪动 ([03a349b](https://github.com/tianxintiandisheng/demo-doc/commit/03a349b098214cf15ab5f4a5dd53e727778da495))
+
+### ✨ Features | 新功能
+
+- **problem:** react 函数组件 usestate 数据更新 demo ([16d208c](https://github.com/tianxintiandisheng/demo-doc/commit/16d208ca0d2aee583bbbb2fc3094b424b8745055))
+- **problem:** reactUseStateOutside ([f74abc4](https://github.com/tianxintiandisheng/demo-doc/commit/f74abc46d3b5d8141593ef0be71c5d3e78b83e1a))
+- **utils:** 方案 c ref ([96a967e](https://github.com/tianxintiandisheng/demo-doc/commit/96a967ef6d07998404582d29289aef001ba5f758))
+- **utils:** 使用 js 原生方法获取高度 ([b187025](https://github.com/tianxintiandisheng/demo-doc/commit/b18702538d39520a3d4d0edb999230f7b66d3725))
+- **utils:** 自适应高度的 table ([a698859](https://github.com/tianxintiandisheng/demo-doc/commit/a698859a3a5c0934079194087eaa05f781af7d8a))
+
+### ✏️ Documentation | 文档
+
+- **utils:** 更新文档 ([7931b94](https://github.com/tianxintiandisheng/demo-doc/commit/7931b9432381c9d38daedc7427001494eb5bd2f1))
+
 ## [1.3.0](https://github.com/tianxintiandisheng/demo-doc/compare/v1.1.9...v1.3.0) (2022-06-07)
 
 ### ✏️ Documentation | 文档
