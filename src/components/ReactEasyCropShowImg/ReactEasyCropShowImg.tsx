@@ -55,7 +55,7 @@ const ReactEasyCropShowImg = (props: ReactEasyCropShowImgProps) => {
   };
   return (
     <div className={`${styles.root} ${className}`} {...otherProps}>
-      <h3>Crop</h3>
+      <h2>Crop 操作区</h2>
       <div className={styles.cropBox}>
         <Cropper
           image={yourImage}
@@ -75,7 +75,7 @@ const ReactEasyCropShowImg = (props: ReactEasyCropShowImgProps) => {
       <div style={{ marginTop: 12, marginBottom: 12 }}>
         <Button onClick={onOk}>生成剪切结果</Button>
       </div>
-      <h3>剪切结果</h3>
+      <h2>剪切结果</h2>
       <img className={styles.resultImg} src={resultUrl}></img>
     </div>
   );

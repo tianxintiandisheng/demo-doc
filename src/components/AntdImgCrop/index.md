@@ -18,7 +18,7 @@ group:
 ```tsx
 /**
  * title: antd 官方提供的剪切组件
- * desc: 仅支持本地图片的剪切
+ * desc: 仅支持本地图片的剪切和上传
  */
 import { Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
