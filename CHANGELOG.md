@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/tianxintiandisheng/demo-doc/compare/v1.4.0...v1.5.0) (2022-11-15)
+
+### ✏️ Documentation | 文档
+
+- **imgcrop:** 文档完善 ([afa0512](https://github.com/tianxintiandisheng/demo-doc/commit/afa05124451f8cda43f71ce4782993b66a76cd45))
+
+### ✨ Features | 新功能
+
+- **imgcrop:** 图片上传剪切 ([5062c06](https://github.com/tianxintiandisheng/demo-doc/commit/5062c065b9df8b9dc40cdafd2f438ebffc300617))
+- **js:** 20.4 File API 与 Blob API ([3f2a41a](https://github.com/tianxintiandisheng/demo-doc/commit/3f2a41a9e115e404d2febc4f0d2fb2e633df1b15))
+- **root:** three.js ([200fb0f](https://github.com/tianxintiandisheng/demo-doc/commit/200fb0f883258940bb9f8f5523a49dd5c862fb81))
+
 ## [1.4.0](https://github.com/tianxintiandisheng/demo-doc/compare/v1.3.0...v1.4.0) (2022-08-11)
 
 ### 🐛 Bug Fixes | Bug 修复
