@@ -1,5 +1,5 @@
 ---
-title: 多个setstate的合并
+title: react中多个setstate的合并
 nav:
   path: /utils
   title: Utils
@@ -66,7 +66,7 @@ export default () => {
 };
 ```
 
-### 问题描述
+<!-- ### 问题描述
 
 根据`useState`的特性,简单模仿`useState`
 
@@ -121,9 +121,11 @@ _解决方案_
 
 每次 setState 之后应该让函数组重新执行且`Dom`没有重新渲染
 
-<!-- <code src="./index.tsx" title='浮点数的求和' desc='浮点数的求和,sumFloatNum方法不支持进位'></code> -->
+<code src="./index.tsx" title='浮点数的求和' desc='浮点数的求和,sumFloatNum方法不支持进位'></code> -->
 
 ## 解决方案
+
+TODO
 
 ### 使用 useState
 

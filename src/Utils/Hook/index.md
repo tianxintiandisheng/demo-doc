@@ -1,5 +1,5 @@
 ---
-title: useEffect VS componentDidUpdate
+title: 使用useEffect模拟componentDidUpdata
 nav:
   path: /utils
   title: Utils
@@ -14,7 +14,7 @@ group:
 
 ## 背景介绍
 
-在列表搜索条件变化时,需要保存搜索条件,但是保存搜索条件这个方法不需要在组件挂载时执行,即如何使 useEffect 在渲染时不执行，只在数据变更时执行
+在列表搜索条件变化时,需要保存搜索条件,但是保存搜索条件这个方法不需要在组件挂载时执行,即如何使 useEffect 在渲染时不执行，只在数据变更时执行(即模拟类组件的 componentDidUpdata)
 
 ### 问题描述
 
