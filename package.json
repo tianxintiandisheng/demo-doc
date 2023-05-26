@@ -1,12 +1,14 @@
 {
   "name": "demo-doc",
-  "version": "0.0.1",
+  "version": "1.5.0",
   "description": "A static site based on dumi",
   "license": "MIT",
   "scripts": {
     "build": "dumi build",
     "dev": "dumi dev",
     "prepare": "husky install && dumi setup",
+    "release": "standard-version",
+    "release:dry": "standard-version --dry-run",
     "start": "npm run dev"
   },
   "commitlint": {
@@ -19,13 +21,15 @@
       "prettier --write --no-error-on-unmatched-pattern"
     ]
   },
+  "dependencies": {},
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
     "dumi": "^2.2.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "standard-version": "^9.5.0"
   },
   "authors": [
     "tds"
