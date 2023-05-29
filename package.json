@@ -21,7 +21,10 @@
       "prettier --write --no-error-on-unmatched-pattern"
     ]
   },
-  "dependencies": {},
+  "dependencies": {
+    "antd": "^5.5.1",
+    "antd-img-crop": "^4.12.2"
+  },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
