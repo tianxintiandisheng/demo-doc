@@ -1,8 +1,6 @@
 ## DynamicDrag
 
-### Demo
-
-<code src="./DynamicDrag.jsx" title='可增减数量拖拽' desc='动态数量的列表（带有功能组件）和删除项目的能力'></code>
+<code src="./DynamicDrag.jsx" title='可增减数量拖拽' description='基于react-beautiful-dnd的动态数量的列表（带有功能组件）和删除项目的能力'></code>
 
 ### 参考资料
 

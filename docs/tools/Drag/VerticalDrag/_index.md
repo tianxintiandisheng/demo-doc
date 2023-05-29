@@ -1,6 +1,6 @@
 ## VerticalDrag
 
-<code src="./VerticalDrag.jsx" title='垂直拖拽' desc='基于react-beautiful-dnd的的垂直拖拽,带一点简单的样式'></code>
+<code src="./VerticalDrag.jsx" title='垂直拖拽' description='基于react-beautiful-dnd的的垂直拖拽,带一点简单的样式'></code>
 
 ### 参考资料
 

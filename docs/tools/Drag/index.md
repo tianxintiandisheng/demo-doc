@@ -1,4 +1,8 @@
-# react_beautiful_dnd
+---
+title: Drag
+---
+
+# react-beautiful-dnd
 
 <embed src="./BasicsDrag/_index.md"></embed>
 
