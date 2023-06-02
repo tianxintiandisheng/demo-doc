@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>对象URL与Blob</title>
+</head>
+<style>
+  img {
+    width: 100%;
+    height: auto;
+  }
+</style>
+
+<body>
+  <h1 id="file">20.4 File API 与 Blob API</h1>
+  <h3 id="file">20.4.5 对象URL与Blob</h3>
+  <input type="file" name="FirstName" id="files-list" />
+  <p>进度(progress)</p>
+  <div id="progress"></div>
+  <p>输出(output)</p>
+  <div id="output"></div>
+</body>
+<script type="text/javascript">
+  let filesList = document.getElementById("files-list");
+  filesList.addEventListener("change", (event) => {
+    let info = "",
+      output = document.getElementById("output"),
+      progress = document.getElementById("progress"),
+      files = event.target.files,
+      reader = new FileReader(),
+      url = window.URL.createObjectURL(files[0]); // Blob URL
+    if (url) {
+      if (/image/.test(files[0].type)) {
+        output.innerHTML = `<img src="${url}">`;
+      } else {
+        output.innerHTML = "Not an image.";
+      }
+    } else {
+      output.innerHTML = "Your browser doesn't support object URLs.";
+    }
+  });
+</script>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Static Template</title>
+</head>
+<style>
+  img {
+    width: 100%;
+    height: auto;
+  }
+</style>
+
+<body>
+  <h1 id="file">20.4 File API 与 Blob API</h1>
+  <h3 id="file">20.4.2 FileReader类型</h3>
+  <input type="file" name="FirstName" id="files-list" />
+  <p>进度(progress)</p>
+  <div id="progress"></div>
+  <p>输出(output)</p>
+  <div id="output"></div>
+</body>
+<script type="text/javascript">
+  let filesList = document.getElementById('files-list');
+  console.log('filesList', filesList);
+  filesList.addEventListener('change', (event) => {
+    let info = '',
+      output = document.getElementById('output'),
+      progress = document.getElementById('progress'),
+      files = event.target.files,
+      type = 'default',
+      reader = new FileReader();
+    if (/image/.test(files[0].type)) {
+      reader.readAsDataURL(files[0]);
+      type = 'image';
+    } else {
+      reader.readAsText(files[0]);
+      type = 'text';
+    }
+    reader.onerror = function () {
+      output.innerHTML = 'Could not read file, error code is ' + reader.error.code;
+    };
+    reader.onprogress = function (event) {
+      if (event.lengthComputable) {
+        progress.innerHTML = `${event.loaded}/${event.total}`;
+      }
+    };
+    reader.onload = function () {
+      let html = '';
+      switch (type) {
+        case 'image':
+          html = `<img src="${reader.result}">`;
+          break;
+        case 'text':
+          html = reader.result;
+          break;
+      }
+      output.innerHTML = html;
+    };
+  });
+</script>
+
+</html>
