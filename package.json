@@ -24,6 +24,7 @@
   "dependencies": {
     "antd": "^5.5.1",
     "antd-img-crop": "^4.12.2",
+    "html-loader": "^4.2.0",
     "react-beautiful-dnd": "^13.1.1"
   },
   "devDependencies": {
