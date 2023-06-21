@@ -1,21 +1,23 @@
 ---
+title: A static site based on dumi
 hero:
   title: demo-doc
-  desc: 学习过程中一些demo的整合
+  description: 学习过程中一些demo的整合
   actions:
-    - text: 快速开始
-      link: /FormilyDemo
+    - text: 工具使用
+      link: /tools
+    - text: 常用方法
+      link: /utils
 features:
-  - icon: https://gw.alipayobjects.com/zos/bmw-prod/881dc458-f20b-407b-947a-95104b5ec82b/k79dm8ih_w144_h144.png
-    title: Feature 1
-    desc: 开箱即用
-  - icon: https://gw.alipayobjects.com/zos/bmw-prod/d60657df-0822-4631-9d7c-e7a869c2f21c/k79dmz3q_w126_h126.png
-    title: Feature 2
-    desc: 加载迅速
-  - icon: https://gw.alipayobjects.com/zos/bmw-prod/d1ee0c6f-5aed-4a45-a507-339a4bfe076c/k7bjsocq_w144_h144.png
-    title: Feature 3
-    desc: 代码可视
-footer: <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">浙ICP备2022009054号-1</a><br />Powered by [dumi](https://d.umijs.org)
+  - title: Hello
+    emoji: 💎
+    description: 开箱即用
+  - title: World
+    emoji: 🌈
+    description: 加载迅速
+  - title: '!'
+    emoji: 🚀
+    description: 代码可视
 ---
 
-## Hello demo-doc!
+demo-文档

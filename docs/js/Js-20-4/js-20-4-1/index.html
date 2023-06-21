@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Static Template</title>
+  </head>
+  <body>
+    <h1 id="file">20.4 File API 与 Blob API</h1>
+    <h3 id="file">20.4.1 File类型</h3>
+    <input type="file" name="FirstName" id="files-list" />
+  </body>
+  <script type="text/javascript">
+    let filesList = document.getElementById("files-list");
+    console.log("filesList", filesList);
+    filesList.addEventListener("change", (event) => {
+      let files = event.target.files,
+        i = 0,
+        len = files.length;
+      while (i < len) {
+        const f = files[i];
+        console.log(`${f.name} (${f.type}, ${f.size} bytes)`);
+        i++;
+      }
+    });
+  </script>
+</html>

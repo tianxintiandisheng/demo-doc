@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>20.4.4 Blob与部分读取</title>
+  </head>
+  <style>
+    img {
+      width: 100%;
+      height: auto;
+    }
+  </style>
+
+  <body>
+    <h1 id="file">20.4 File API 与 Blob API</h1>
+    <h3 id="file">20.4.4 Blob与部分读取</h3>
+    <input type="file" name="FirstName" id="files-list" />
+    <p>进度(progress)</p>
+    <div id="progress"></div>
+    <p>输出(output)</p>
+    <div id="output"></div>
+  </body>
+  <script type="text/javascript">
+    let filesList = document.getElementById("files-list");
+    filesList.addEventListener("change", (event) => {
+      let info = "",
+        output = document.getElementById("output"),
+        progress = document.getElementById("progress"),
+        files = event.target.files,
+        reader = new FileReader(),
+        // blob = Blobslice(files[0], 0, 32); // Blobslice这个方法应该是自定义的
+        blob = files[0].slice(0, 32); // 此处和书中不同
+
+      if (blob) {
+        reader.readAsText(blob);
+        reader.onerror = function () {
+          output.innerHTML =
+            "Could not read file, error code is " + reader.error.code;
+        };
+        reader.onload = function () {
+          output.innerHTML = reader.result;
+        };
+      } else {
+        console.log("Your browser doesn't support slice().");
+      }
+    });
+  </script>
+</html>

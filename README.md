@@ -1,36 +1,23 @@
 # demo-doc
 
-## Getting Started
+A static site base on [dumi](https://d.umijs.org).
 
-安装依赖
-
-```bash
-$ npm i
-```
-
-启动项目
+## Development
 
 ```bash
-$ npm start
+# install dependencies
+$ yarn install
+
+# start dev server
+$ yarn start
+
+# build docs
+$ yarn run build
 ```
 
-打包文档站点项目
+## LICENSE
 
-```bash
-$ npm run docs:build
-```
-
-启动测试
-
-```bash
-$ npm test
-```
-
-Build library via `father-build`,
-
-```bash
-$ npm run build
-```
+MIT
 
 ## 提交代码
 
@@ -73,10 +60,8 @@ git cz 给出了 commit 的几种类型选项，如下：
 - chore 非 src 或者 测试文件的更新
 - revert commit 回退
 
-## CHANGELOG
-
-生成 CHANGELOG 文件
+## 生成 CHANGELOG 文件
 
 ```bash
-npm run changelog
+npm run release
 ```
