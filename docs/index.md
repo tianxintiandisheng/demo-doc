@@ -1,23 +1,23 @@
 ---
 title: A static site based on dumi
 hero:
-  title: Site
-  description: A static site based on dumi
+  title: demo-doc
+  description: 学习过程中一些demo的整合
   actions:
-    - text: Hello
-      link: /
-    - text: World
-      link: /
+    - text: 工具使用
+      link: /tools
+    - text: 常用方法
+      link: /utils
 features:
   - title: Hello
     emoji: 💎
-    description: Put hello description here
+    description: 开箱即用
   - title: World
     emoji: 🌈
-    description: Put world description here
+    description: 加载迅速
   - title: '!'
     emoji: 🚀
-    description: Put ! description here
+    description: 代码可视
 ---
 
-demo-doc
+demo-文档
