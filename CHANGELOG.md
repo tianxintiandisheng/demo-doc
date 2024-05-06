@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/tianxintiandisheng/demo-doc/compare/v3.0.0...v2.1.0) (2024-05-06)
+
+### ✨ Features | 新功能
+
+- **tools:** @monaco-editor/react json 可视化编辑 ([0ebb8a3](https://github.com/tianxintiandisheng/demo-doc/commit/0ebb8a387c8f21d74145e5b9cc9006e0a540b7c2))
+
 ## 2.0.0 (2023-06-21)
 
 ### ⚠ BREAKING CHANGES
