@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/tianxintiandisheng/demo-doc/compare/v2.1.0...v2.2.0) (2024-05-28)
+
+### ✨ Features | 新功能
+
+- **utils:** 底层数据结构-链表 ([38d0478](https://github.com/tianxintiandisheng/demo-doc/commit/38d0478bda26f67276412aefd31f82fe0f73dd68))
+
 ## [2.1.0](https://github.com/tianxintiandisheng/demo-doc/compare/v3.0.0...v2.1.0) (2024-05-06)
 
 ### ✨ Features | 新功能
