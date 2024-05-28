@@ -1,0 +1,23 @@
+.root{
+  position: relative;
+
+  .marquee-container {
+    overflow: hidden;
+    width: 120px; /* 或者设置为你想要的宽度 */
+  }
+  
+  .marquee {
+    display: flex;
+    animation: scroll-text 5s linear infinite;
+    white-space: nowrap;
+  }
+  
+  @keyframes scroll-text {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+}
