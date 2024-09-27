@@ -1,33 +1,39 @@
 import { Button, Divider, Form, Input } from 'antd';
+import moment from 'moment';
 import React, { useState } from 'react';
 import { DayPicker } from 'react-day-picker';
+
 import { zhCN } from 'react-day-picker/locale';
 import 'react-day-picker/style.css';
+import { v4 as uuidv4 } from 'uuid';
 import './BurnDownChart.less';
+import TaskConfigModal from './components/TaskConfigModal';
 
 const { TextArea } = Input;
 
-enum Status {
+export enum Status {
   TODO = 'TODO',
   DOING = 'DOING',
   DONE = 'DONE',
 }
 
-interface CardItem {
+export interface CardItem {
+  id: string; // 唯一id
   title: string;
   status: Status;
   description?: string;
   workload?: number;
-  dateDone?: Date;
+  dateDone?: moment.Moment;
 }
 
+moment().format()
 export interface BurnDownChartProps
   extends Omit<
     React.HTMLAttributes<HTMLDivElement>,
     'defaultValue' | 'onChange'
   > {}
 
-const STATUS_LIST = [
+export const STATUS_LIST = [
   {
     title: '待处理',
     type: Status.TODO,
@@ -42,14 +48,19 @@ const STATUS_LIST = [
   },
 ];
 
+const dateFormat = 'YYYY/MM/DD';
+
+
 const BurnDownChart = (props: BurnDownChartProps) => {
   const { className = '', ...otherProps } = props;
   const [selected, setSelected] = useState<Date[] | undefined>();
   const [listToDo, setListToDo] = useState<CardItem[]>([]); // 待处理
   const [listDoing, setListDoing] = useState<CardItem[]>([]); // 处理中
   const [listDone, setListDone] = useState<CardItem[]>([]); // 已完成
+  const [curCard, setCurCard] = useState<CardItem>();
   const [curListEnum, setCurListEnum] = useState<Status | undefined>();
   const [withAddForm, setWithAddForm] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const getListByType = (type) => {
     switch (type) {
@@ -63,14 +74,39 @@ const BurnDownChart = (props: BurnDownChartProps) => {
         return [];
     }
   };
+  const updateListByType = (type: Status, list: CardItem[]) => {
+    switch (type) {
+      case Status.TODO:
+        setListToDo(list);
+        break;
+      case Status.DOING:
+        setListDoing(list);
+        break;
+      case Status.DONE:
+        setListDone(list);
+        break;
+      default:
+        break;
+    }
+  };
 
-  const renderCardList = (cardList: CardItem[]) => {
+  const renderCardList = (cardList: CardItem[], type: Status) => {
     if (Array.isArray(cardList) && cardList.length > 0) {
-      return cardList.map((item, index) => (
-        <div className="card-item" key={index}>
+      return cardList.map((item) => (
+        <div
+          className="card-item"
+          key={item.id}
+          onClick={() => {
+            setCurListEnum(type);
+            setCurCard(item);
+            setOpen(true);
+          }}
+        >
           <div>{item.title}</div>
-          <div>状态：{item.status}</div>
-          {/* <div>完成日期：{item.dateDone?.toLocaleDateString()}</div> */}
+          <div>工作量：{item.workload}</div>
+          {item.dateDone && (
+            <div>完成日期：{item.dateDone?.format(dateFormat)}</div>
+          )}
         </div>
       ));
     }
@@ -86,11 +122,15 @@ const BurnDownChart = (props: BurnDownChartProps) => {
             <Button>取消</Button>
           </div> */}
           <Form
+            style={{
+              padding: '4px 15px 0 15px',
+            }}
             onFinish={(values: any) => {
               console.log(values);
               if (curListEnum) {
                 let tempList: CardItem[] = [...getListByType(curListEnum)];
                 tempList.push({
+                  id: uuidv4(),
                   title: values.tile,
                   status: curListEnum,
                 });
@@ -117,11 +157,22 @@ const BurnDownChart = (props: BurnDownChartProps) => {
             >
               <TextArea placeholder="请输入" rows={4} />
             </Form.Item>
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              <Button type="primary" htmlType="submit">
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{ marginRight: 4 }}
+              >
                 确认
               </Button>
-              <Button>取消</Button>
+              <Button
+                onClick={() => {
+                  setWithAddForm(false);
+                  setSelected(undefined);
+                }}
+              >
+                取消
+              </Button>
             </Form.Item>
           </Form>
         </>
@@ -142,11 +193,12 @@ const BurnDownChart = (props: BurnDownChartProps) => {
           return (
             <div key={i.type} className="card-list">
               <div className="list-title">{i.title}</div>
+              <Divider style={{ margin: '12px 0' }} />
+              {curListEnum === i.type && renderAddForm()}
               <div className="list-body">
-                {renderCardList(getListByType(i.type))}
+                {renderCardList(getListByType(i.type), i.type)}
               </div>
               <div className="list-footer">
-                {curListEnum === i.type && renderAddForm()}
                 <Button
                   type="link"
                   onClick={() => {
@@ -161,6 +213,30 @@ const BurnDownChart = (props: BurnDownChartProps) => {
           );
         })}
       </div>
+      {open && (
+        <TaskConfigModal
+          open={open}
+          curCard={curCard}
+          onCreate={(value) => {
+            console.log('🚀 ~ BurnDownChart ~ value:', value);
+            let tempList = [...getListByType(curListEnum)];
+            tempList = tempList.map((i) => {
+              if (i.id === curCard?.id) {
+                return {
+                  id: i.id,
+                  ...value,
+                };
+              }
+              return i;
+            });
+            if (curListEnum) {
+              updateListByType(curListEnum, tempList);
+              setOpen(false);
+            }
+          }}
+          onCancel={() => setOpen(false)}
+        />
+      )}
     </div>
   );
 };
