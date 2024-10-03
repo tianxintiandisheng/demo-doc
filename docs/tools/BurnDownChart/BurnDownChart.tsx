@@ -22,7 +22,7 @@ export interface CardItem {
   status: Status;
   description?: string;
   workload?: number;
-  dateDone?: moment.Moment;
+  dateDone?: string;
 }
 export interface BurnDownChartProps
   extends Omit<
@@ -45,7 +45,22 @@ export const STATUS_LIST = [
   },
 ];
 
+interface Plot {
+  series: string;
+  x: string;
+  y: number;
+}
+
 const dateFormat = 'YYYY/MM/DD';
+
+function sumWorkloads(cardItems: CardItem[]): number {
+  return cardItems.reduce((sum, item) => {
+    if (item.workload !== undefined) {
+      return sum + item.workload;
+    }
+    return sum;
+  }, 0);
+}
 
 const BurnDownChart = (props: BurnDownChartProps) => {
   const { className = '', ...otherProps } = props;
@@ -56,32 +71,70 @@ const BurnDownChart = (props: BurnDownChartProps) => {
   const [withAddForm, setWithAddForm] = useState(false);
   const [open, setOpen] = useState(false);
 
-  //   switch (type) {
-  //     case Status.TODO:
-  //       return listToDo;
-  //     case Status.DOING:
-  //       return listDoing;
-  //     case Status.DONE:
-  //       return listDone;
-  //     default:
-  //       return [];
-  //   }
-  // };
-  // const updateListByType = (type: Status, list: CardItem[]) => {
-  //   switch (type) {
-  //     case Status.TODO:
-  //       setListToDo(list);
-  //       break;
-  //     case Status.DOING:
-  //       setListDoing(list);
-  //       break;
-  //     case Status.DONE:
-  //       setListDone(list);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
+  const getCharData = () => {
+    if (selected) {
+      // console.log('🚀 ~ getCharData ~ selected:', selected);
+      console.log('🚀 ~ getCharData ~ dateStrList:', selected);
+      window.localStorage.setItem(
+        'dateStrList',
+        JSON.stringify(selected.map((i) => moment(i).format('YYYY-MM-DD'))),
+      );
+    }
+    if (listAll) {
+      window.localStorage.setItem('listAll', JSON.stringify(listAll));
+    }
+    if (selected && listAll) {
+      const totalWorkload = sumWorkloads(listAll); // 计算总工作量
+      // const dateList = selected.map((i) => moment(i).format('YYYY-MM-DD'));//  转换日期列表
+      const guideDailyWorkload = totalWorkload / selected.length; // 计算每天的理想工作量
+
+      const dataGuide: Plot[] = selected.map((i, index) => ({
+        series: '参考线',
+        x: moment(i).format('YYYY-MM-DD'),
+        // x: i,
+        y: totalWorkload - guideDailyWorkload * (index + 1),
+      }));
+      const dataReal: Plot[] = []; // 实际线数据
+      let remainingWorkload = totalWorkload; // 声明中间变量，用于循环
+      for (const date of selected) {
+        // 找出在当前日期之前完成的所有任务
+        const completedTasks = listAll.filter(
+          (item) =>
+            item.dateDone && moment(item.dateDone).isSameOrBefore(date, 'day'),
+        );
+        console.log('🚀 ~ getCharData ~ completedTasks:', completedTasks);
+        const completedWorkload = completedTasks.reduce(
+          (sum, item) => sum + (item.workload || 0),
+          0,
+        );
+        const remaining = totalWorkload - completedWorkload;
+
+        dataReal.push({
+          series: 'Actual',
+          x: moment(date).format('YYYY-MM-DD'),
+          // x: i,
+          y: remaining,
+        });
+        // 更新剩余工作量
+        remainingWorkload = remaining;
+      }
+      console.log('🚀 ~ getCharData ~ dataGuide:', [...dataGuide, ...dataReal]);
+      return [...dataGuide, ...dataReal];
+    }
+  };
+
+  const loadData = () => {
+    const dateStrList = window.localStorage.getItem('dateStrList');
+    const listAllStr = window.localStorage.getItem('listAll');
+    if (dateStrList) {
+      const dateStrListArr = JSON.parse(dateStrList);
+      setSelected(dateStrListArr.map((i) => moment(i, dateFormat).toDate()));
+    }
+    if (listAllStr) {
+      const listAllArr = JSON.parse(listAllStr);
+      setListAll(listAllArr);
+    }
+  };
 
   const renderCardList = (cardList: CardItem[], type: Status) => {
     if (Array.isArray(cardList) && cardList.length > 0) {
@@ -97,13 +150,9 @@ const BurnDownChart = (props: BurnDownChartProps) => {
         >
           <div>{item.title}</div>
           <div>
-            {item?.workload && (
-              <Badge count={item?.workload} color="#40a9ff" />
-            )}
+            {item?.workload && <Badge count={item?.workload} color="#40a9ff" />}
           </div>
-          {item.dateDone && (
-            <div>完成日期：{item.dateDone?.format(dateFormat)}</div>
-          )}
+          {item.dateDone && <div>完成日期：{item.dateDone}</div>}
         </div>
       ));
     }
@@ -131,10 +180,7 @@ const BurnDownChart = (props: BurnDownChartProps) => {
               }
             }}
           >
-            <Form.Item
-              name="tile"
-              rules={[{ required: true }]}
-            >
+            <Form.Item name="tile" rules={[{ required: true }]}>
               <TextArea placeholder="请输入" rows={4} />
             </Form.Item>
             <Form.Item>
@@ -196,6 +242,21 @@ const BurnDownChart = (props: BurnDownChartProps) => {
           );
         })}
       </div>
+      <Divider />
+      <Button
+        onClick={() => {
+          getCharData();
+        }}
+      >
+        生成数据
+      </Button>
+      <Button
+        onClick={() => {
+          loadData();
+        }}
+      >
+        读取数据
+      </Button>
       {open && (
         <TaskConfigModal
           open={open}
@@ -206,8 +267,9 @@ const BurnDownChart = (props: BurnDownChartProps) => {
             tempList = tempList.map((i) => {
               if (i.id === curCard?.id) {
                 return {
-                  id: i.id,
                   ...value,
+                  id: i.id,
+                  dateDone: value.dateDone?.format('YYYY-MM-DD') || '',
                 };
               }
               return i;
