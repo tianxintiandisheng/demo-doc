@@ -6,6 +6,7 @@ import { zhCN } from 'react-day-picker/locale';
 import 'react-day-picker/style.css';
 import { v4 as uuidv4 } from 'uuid';
 import './BurnDownChart.less';
+import LineChart from './components/LineChart';
 import TaskConfigModal from './components/TaskConfigModal';
 
 const { TextArea } = Input;
@@ -47,7 +48,7 @@ export const STATUS_LIST = [
 
 interface Plot {
   series: string;
-  x: string;
+  x: string | number;
   y: number;
 }
 
@@ -66,6 +67,7 @@ const BurnDownChart = (props: BurnDownChartProps) => {
   const { className = '', ...otherProps } = props;
   const [selected, setSelected] = useState<Date[] | undefined>();
   const [listAll, setListAll] = useState<CardItem[]>([]); // 全部
+  const [data, setData] = useState<Plot[]>([]);
   const [curCard, setCurCard] = useState<CardItem>();
   const [curListEnum, setCurListEnum] = useState<Status | undefined>();
   const [withAddForm, setWithAddForm] = useState(false);
@@ -85,7 +87,6 @@ const BurnDownChart = (props: BurnDownChartProps) => {
     }
     if (selected && listAll) {
       const totalWorkload = sumWorkloads(listAll); // 计算总工作量
-      // const dateList = selected.map((i) => moment(i).format('YYYY-MM-DD'));//  转换日期列表
       const guideDailyWorkload = totalWorkload / selected.length; // 计算每天的理想工作量
 
       const dataGuide: Plot[] = selected.map((i, index) => ({
@@ -110,7 +111,7 @@ const BurnDownChart = (props: BurnDownChartProps) => {
         const remaining = totalWorkload - completedWorkload;
 
         dataReal.push({
-          series: 'Actual',
+          series: '实际线',
           x: moment(date).format('YYYY-MM-DD'),
           // x: i,
           y: remaining,
@@ -118,8 +119,26 @@ const BurnDownChart = (props: BurnDownChartProps) => {
         // 更新剩余工作量
         remainingWorkload = remaining;
       }
-      console.log('🚀 ~ getCharData ~ dataGuide:', [...dataGuide, ...dataReal]);
-      return [...dataGuide, ...dataReal];
+
+      const initData = [
+        {
+          series: '参考线',
+          x: 0,
+          y: totalWorkload,
+        },
+        {
+          series: '实际线',
+          x: 0,
+          y: totalWorkload,
+        },
+      ];
+      console.log('🚀 ~ getCharData ~ dataGuide:', [
+        ...initData,
+        ...dataGuide,
+        ...dataReal,
+      ]);
+      setData([...initData, ...dataGuide, ...dataReal]);
+      return [...initData, ...dataGuide, ...dataReal];
     }
   };
 
@@ -257,6 +276,7 @@ const BurnDownChart = (props: BurnDownChartProps) => {
       >
         读取数据
       </Button>
+      <LineChart data={data} />
       {open && (
         <TaskConfigModal
           open={open}
