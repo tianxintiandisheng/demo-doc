@@ -22,6 +22,7 @@
     ]
   },
   "dependencies": {
+    "@antv/g2plot": "^2.4.32",
     "@monaco-editor/react": "^4.6.0",
     "antd": "^5.5.1",
     "antd-img-crop": "^4.12.2",
