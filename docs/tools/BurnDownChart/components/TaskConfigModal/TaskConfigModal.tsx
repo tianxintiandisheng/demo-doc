@@ -1,5 +1,4 @@
-import { DatePicker, Form, Input, InputNumber, Modal, Select } from 'antd';
-import locale from 'antd/es/date-picker/locale/zh_CN';
+import { Form, Input, InputNumber, Modal, Select } from 'antd';
 import moment from 'moment';
 import React, { useEffect } from 'react';
 import { CardItem, STATUS_LIST, Status } from '../../BurnDownChart';
@@ -9,7 +8,7 @@ interface Values {
   title: string;
   status: Status;
   workload?: number;
-  dateDone?: moment.Moment;
+  dateDone?: string;
 }
 
 export interface TaskConfigModalProps
@@ -19,6 +18,7 @@ export interface TaskConfigModalProps
   > {
   open: boolean;
   curCard?: CardItem;
+  selectOption: { value: string; label: string }[];
   onCreate: (values: Values) => void;
   onCancel: () => void;
 }
@@ -30,6 +30,7 @@ const TaskConfigModal = (props: TaskConfigModalProps) => {
     curCard,
     onCreate,
     onCancel,
+    selectOption,
     ...otherProps
   } = props;
   const [form] = Form.useForm();
@@ -37,7 +38,6 @@ const TaskConfigModal = (props: TaskConfigModalProps) => {
     if (curCard) {
       form.setFieldsValue({
         ...curCard,
-        dateDone: curCard.dateDone ? moment(curCard.dateDone) : undefined,
       });
     }
   }, [curCard?.id]);
@@ -93,7 +93,19 @@ const TaskConfigModal = (props: TaskConfigModalProps) => {
             <InputNumber min={0.5} max={10} />
           </Form.Item>
           <Form.Item name="dateDone" label="完成时间">
-            <DatePicker locale={locale} />
+            {/* <DatePicker locale={locale} /> */}
+            <Select
+              style={{ width: 250 }}
+              placeholder="选择完成日期"
+              options={selectOption}
+              showSearch
+              filterOption={(input, option) =>
+                (option?.label ?? '')
+                  // @ts-ignore
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
+            />
           </Form.Item>
         </Form>
       </Modal>

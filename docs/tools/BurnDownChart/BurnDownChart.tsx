@@ -315,6 +315,14 @@ const BurnDownChart = (props: BurnDownChartProps) => {
         <TaskConfigModal
           open={open}
           curCard={curCard}
+          selectOption={
+            selected?.map((i) => {
+              return {
+                value: moment(i).format('YYYY-MM-DD'),
+                label: moment(i).format('YYYY-MM-DD'),
+              };
+            }) || []
+          }
           onCreate={(value) => {
             console.log('🚀 ~ BurnDownChart ~ value:', value);
             let tempList = [...listAll];
@@ -324,7 +332,7 @@ const BurnDownChart = (props: BurnDownChartProps) => {
                 if (value.status === Status.DONE) {
                   // 状态为已完成时，如果没有设置完成日期，默认为当天
                   tempDate = value.dateDone
-                    ? value.dateDone?.format('YYYY-MM-DD')
+                    ? value.dateDone
                     : moment().format('YYYY-MM-DD');
                 }
                 return {
