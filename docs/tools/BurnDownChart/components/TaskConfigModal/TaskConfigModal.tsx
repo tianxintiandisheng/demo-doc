@@ -1,16 +1,9 @@
-import {
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  Modal,
-  Select,
-} from 'antd';
-import React, { useEffect } from 'react';
+import { DatePicker, Form, Input, InputNumber, Modal, Select } from 'antd';
+import locale from 'antd/es/date-picker/locale/zh_CN';
 import moment from 'moment';
+import React, { useEffect } from 'react';
 import { CardItem, STATUS_LIST, Status } from '../../BurnDownChart';
 import './TaskConfigModal.module.less';
-
 
 interface Values {
   title: string;
@@ -42,14 +35,17 @@ const TaskConfigModal = (props: TaskConfigModalProps) => {
   const [form] = Form.useForm();
   useEffect(() => {
     if (curCard) {
-      form.setFieldsValue(curCard);
+      form.setFieldsValue({
+        ...curCard,
+        dateDone: curCard.dateDone ? moment(curCard.dateDone) : undefined,
+      });
     }
   }, [curCard?.id]);
   return (
     <div className="TaskConfigModal" {...otherProps}>
       <Modal
         visible={open}
-        title="数据同步到微伴"
+        title="编辑任务"
         okText="确认"
         cancelText="取消"
         onCancel={onCancel}
@@ -97,7 +93,7 @@ const TaskConfigModal = (props: TaskConfigModalProps) => {
             <InputNumber min={0.5} max={10} />
           </Form.Item>
           <Form.Item name="dateDone" label="完成时间">
-            <DatePicker />
+            <DatePicker locale={locale} />
           </Form.Item>
         </Form>
       </Modal>

@@ -1,4 +1,4 @@
-import { Badge, Button, Divider, Form, Input } from 'antd';
+import { Badge, Button, Descriptions, Divider, Form, Input, Space } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { DayPicker } from 'react-day-picker';
@@ -46,6 +46,19 @@ export const STATUS_LIST = [
   },
 ];
 
+const handleDownload = (data, filename) => {
+  const jsonData = JSON.stringify(data, null, 2);
+  const blob = new Blob([jsonData], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename || 'data.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
 interface Plot {
   series: string;
   x: string | number;
@@ -75,8 +88,6 @@ const BurnDownChart = (props: BurnDownChartProps) => {
 
   const getCharData = () => {
     if (selected) {
-      // console.log('🚀 ~ getCharData ~ selected:', selected);
-      console.log('🚀 ~ getCharData ~ dateStrList:', selected);
       window.localStorage.setItem(
         'dateStrList',
         JSON.stringify(selected.map((i) => moment(i).format('YYYY-MM-DD'))),
@@ -91,19 +102,22 @@ const BurnDownChart = (props: BurnDownChartProps) => {
 
       const dataGuide: Plot[] = selected.map((i, index) => ({
         series: '参考线',
-        x: moment(i).format('YYYY-MM-DD'),
+        x: moment(i).format('MM-DD'),
         // x: i,
         y: totalWorkload - guideDailyWorkload * (index + 1),
       }));
       const dataReal: Plot[] = []; // 实际线数据
       let remainingWorkload = totalWorkload; // 声明中间变量，用于循环
-      for (const date of selected) {
+      const beforeTodaySelect: Date[] = selected.filter((i, index) =>
+        moment(i).isSameOrBefore(moment(), 'day'),
+      ); // 获取今天以及之前的日期
+      console.log('🚀 ~ getCharData ~ beforeTodaySelect:', beforeTodaySelect);
+      for (const date of beforeTodaySelect) {
         // 找出在当前日期之前完成的所有任务
         const completedTasks = listAll.filter(
           (item) =>
             item.dateDone && moment(item.dateDone).isSameOrBefore(date, 'day'),
         );
-        console.log('🚀 ~ getCharData ~ completedTasks:', completedTasks);
         const completedWorkload = completedTasks.reduce(
           (sum, item) => sum + (item.workload || 0),
           0,
@@ -112,7 +126,7 @@ const BurnDownChart = (props: BurnDownChartProps) => {
 
         dataReal.push({
           series: '实际线',
-          x: moment(date).format('YYYY-MM-DD'),
+          x: moment(date).format('MM-DD'),
           // x: i,
           y: remaining,
         });
@@ -132,11 +146,6 @@ const BurnDownChart = (props: BurnDownChartProps) => {
           y: totalWorkload,
         },
       ];
-      console.log('🚀 ~ getCharData ~ dataGuide:', [
-        ...initData,
-        ...dataGuide,
-        ...dataReal,
-      ]);
       setData([...initData, ...dataGuide, ...dataReal]);
       return [...initData, ...dataGuide, ...dataReal];
     }
@@ -262,20 +271,45 @@ const BurnDownChart = (props: BurnDownChartProps) => {
         })}
       </div>
       <Divider />
-      <Button
-        onClick={() => {
-          getCharData();
-        }}
-      >
-        生成数据
-      </Button>
-      <Button
-        onClick={() => {
-          loadData();
-        }}
-      >
-        读取数据
-      </Button>
+      <Space>
+        <Button
+          onClick={() => {
+            loadData();
+          }}
+        >
+          读取数据
+        </Button>
+        <Button
+          onClick={() => {
+            getCharData();
+          }}
+        >
+          生成图表
+        </Button>
+        <Button
+          onClick={() => {
+            const data = {
+              selected: selected?.map((i) => moment(i).format('YYYY-MM-DD')),
+              listAll,
+            };
+            handleDownload(data, 'chartData');
+          }}
+        >
+          下载数据
+        </Button>
+      </Space>
+
+      <Descriptions title="User Info">
+        <Descriptions.Item label="总工作量">
+          {sumWorkloads(listAll)}
+        </Descriptions.Item>
+        <Descriptions.Item label="已完成">
+          {sumWorkloads(listAll.filter((i) => i.status === Status.DONE))}
+        </Descriptions.Item>
+        <Descriptions.Item label="剩余">
+          {sumWorkloads(listAll.filter((i) => i.status !== Status.DONE))}
+        </Descriptions.Item>
+      </Descriptions>
       <LineChart data={data} />
       {open && (
         <TaskConfigModal
@@ -286,10 +320,17 @@ const BurnDownChart = (props: BurnDownChartProps) => {
             let tempList = [...listAll];
             tempList = tempList.map((i) => {
               if (i.id === curCard?.id) {
+                let tempDate = '';
+                if (value.status === Status.DONE) {
+                  // 状态为已完成时，如果没有设置完成日期，默认为当天
+                  tempDate = value.dateDone
+                    ? value.dateDone?.format('YYYY-MM-DD')
+                    : moment().format('YYYY-MM-DD');
+                }
                 return {
                   ...value,
                   id: i.id,
-                  dateDone: value.dateDone?.format('YYYY-MM-DD') || '',
+                  dateDone: tempDate,
                 };
               }
               return i;
