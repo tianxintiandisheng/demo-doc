@@ -90,7 +90,7 @@ const TaskConfigModal = (props: TaskConfigModalProps) => {
             />
           </Form.Item>
           <Form.Item name="workload" label="工作量">
-            <InputNumber min={0.5} max={10} />
+            <InputNumber min={0.1} max={10} />
           </Form.Item>
           <Form.Item name="dateDone" label="完成时间">
             {/* <DatePicker locale={locale} /> */}

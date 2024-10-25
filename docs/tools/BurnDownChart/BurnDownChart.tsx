@@ -1,4 +1,13 @@
-import { Badge, Button, Descriptions, Divider, Form, Input, Space } from 'antd';
+import {
+  Badge,
+  Button,
+  Descriptions,
+  Divider,
+  Form,
+  Input,
+  message,
+  Space,
+} from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { DayPicker } from 'react-day-picker';
@@ -6,25 +15,14 @@ import { zhCN } from 'react-day-picker/locale';
 import 'react-day-picker/style.css';
 import { v4 as uuidv4 } from 'uuid';
 import './BurnDownChart.less';
+import FileUploader from './components/FileUploader';
 import LineChart from './components/LineChart';
 import TaskConfigModal from './components/TaskConfigModal';
+import { CardItem, DataObj, Plot, Status } from './type.ts';
+import { checkData, saveAsExcelFile, saveAsJsonFile } from './utils';
 
 const { TextArea } = Input;
 
-export enum Status {
-  TODO = 'TODO',
-  DOING = 'DOING',
-  DONE = 'DONE',
-}
-
-export interface CardItem {
-  id: string; // 唯一id
-  title: string;
-  status: Status;
-  description?: string;
-  workload?: number;
-  dateDone?: string;
-}
 export interface BurnDownChartProps
   extends Omit<
     React.HTMLAttributes<HTMLDivElement>,
@@ -46,25 +44,6 @@ export const STATUS_LIST = [
   },
 ];
 
-const handleDownload = (data, filename) => {
-  const jsonData = JSON.stringify(data, null, 2);
-  const blob = new Blob([jsonData], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename || 'data.json';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-};
-
-interface Plot {
-  series: string;
-  x: string | number;
-  y: number;
-}
-
 const dateFormat = 'YYYY/MM/DD';
 
 function sumWorkloads(cardItems: CardItem[]): number {
@@ -79,12 +58,22 @@ function sumWorkloads(cardItems: CardItem[]): number {
 const BurnDownChart = (props: BurnDownChartProps) => {
   const { className = '', ...otherProps } = props;
   const [selected, setSelected] = useState<Date[] | undefined>();
-  const [listAll, setListAll] = useState<CardItem[]>([]); // 全部
+  const [taskList, setTaskList] = useState<CardItem[]>([]); // 全部
   const [data, setData] = useState<Plot[]>([]);
   const [curCard, setCurCard] = useState<CardItem>();
   const [curListEnum, setCurListEnum] = useState<Status | undefined>();
   const [withAddForm, setWithAddForm] = useState(false);
   const [open, setOpen] = useState(false);
+
+  /**
+   * @function 获取全量数据的整合
+   */
+  const getDataObj = (): DataObj => {
+    return {
+      dateList: selected?.map((i) => moment(i).format('YYYY-MM-DD')) || [],
+      taskList,
+    };
+  };
 
   const getCharData = () => {
     if (selected) {
@@ -93,11 +82,11 @@ const BurnDownChart = (props: BurnDownChartProps) => {
         JSON.stringify(selected.map((i) => moment(i).format('YYYY-MM-DD'))),
       );
     }
-    if (listAll) {
-      window.localStorage.setItem('listAll', JSON.stringify(listAll));
+    if (taskList) {
+      window.localStorage.setItem('taskList', JSON.stringify(taskList));
     }
-    if (selected && listAll) {
-      const totalWorkload = sumWorkloads(listAll); // 计算总工作量
+    if (selected && taskList) {
+      const totalWorkload = sumWorkloads(taskList); // 计算总工作量
       const guideDailyWorkload = totalWorkload / selected.length; // 计算每天的理想工作量
 
       const dataGuide: Plot[] = selected.map((i, index) => ({
@@ -114,7 +103,7 @@ const BurnDownChart = (props: BurnDownChartProps) => {
       console.log('🚀 ~ getCharData ~ beforeTodaySelect:', beforeTodaySelect);
       for (const date of beforeTodaySelect) {
         // 找出在当前日期之前完成的所有任务
-        const completedTasks = listAll.filter(
+        const completedTasks = taskList.filter(
           (item) =>
             item.dateDone && moment(item.dateDone).isSameOrBefore(date, 'day'),
         );
@@ -153,14 +142,14 @@ const BurnDownChart = (props: BurnDownChartProps) => {
 
   const loadData = () => {
     const dateStrList = window.localStorage.getItem('dateStrList');
-    const listAllStr = window.localStorage.getItem('listAll');
+    const listAllStr = window.localStorage.getItem('taskList');
     if (dateStrList) {
       const dateStrListArr = JSON.parse(dateStrList);
       setSelected(dateStrListArr.map((i) => moment(i, dateFormat).toDate()));
     }
     if (listAllStr) {
       const listAllArr = JSON.parse(listAllStr);
-      setListAll(listAllArr);
+      setTaskList(listAllArr);
     }
   };
 
@@ -198,13 +187,13 @@ const BurnDownChart = (props: BurnDownChartProps) => {
             onFinish={(values: any) => {
               console.log(values);
               if (curListEnum) {
-                let tempList: CardItem[] = [...listAll];
+                let tempList: CardItem[] = [...taskList];
                 tempList.push({
                   id: uuidv4(),
                   title: values.tile,
                   status: curListEnum,
                 });
-                setListAll(tempList);
+                setTaskList(tempList);
               }
             }}
           >
@@ -251,7 +240,7 @@ const BurnDownChart = (props: BurnDownChartProps) => {
               {curListEnum === i.type && renderAddForm()}
               <div className="list-body">
                 {renderCardList(
-                  listAll.filter((j) => j.status === i.type),
+                  taskList.filter((j) => j.status === i.type),
                   i.type,
                 )}
               </div>
@@ -273,41 +262,87 @@ const BurnDownChart = (props: BurnDownChartProps) => {
       <Divider />
       <Space>
         <Button
+          type="primary"
           onClick={() => {
-            loadData();
-          }}
-        >
-          读取数据
-        </Button>
-        <Button
-          onClick={() => {
-            getCharData();
+            if (checkData(getDataObj())) {
+              getCharData();
+            }else{
+              message.error('工作周期或任务列表为空');
+            }
           }}
         >
           生成图表
         </Button>
         <Button
           onClick={() => {
-            const data = {
-              selected: selected?.map((i) => moment(i).format('YYYY-MM-DD')),
-              listAll,
-            };
-            handleDownload(data, 'chartData');
+            loadData();
           }}
         >
-          下载数据
+          读取数据
         </Button>
+
+        <Button
+          onClick={() => {
+            const dataObj = getDataObj();
+            if (checkData(dataObj)) {
+              saveAsJsonFile(dataObj);
+            } else {
+              message.error('工作周期或任务列表为空');
+            }
+          }}
+        >
+          下载JSON
+        </Button>
+        <Button
+          onClick={() => {
+            if (Array.isArray(selected)) {
+              const dataObj = getDataObj();
+              saveAsExcelFile(dataObj);
+            } else {
+              message.error('工作周期或任务列表为空');
+            }
+          }}
+        >
+          下载Excel
+        </Button>
+        <FileUploader
+          fileType="json"
+          onUploadSuccess={(dataObj) => {
+            setTaskList(dataObj.taskList);
+            setSelected(
+              dataObj.dateList.map((i) => moment(i, dateFormat).toDate()),
+            );
+          }}
+        />
+        <FileUploader
+          fileType="xlsx"
+          onUploadSuccess={(dataObj) => {
+            setTaskList(dataObj.taskList);
+            setSelected(
+              dataObj.dateList.map((i) => moment(i, dateFormat).toDate()),
+            );
+          }}
+        />
+        {/* 下面为原生写法，保留注释以供参考 */}
+        {/* <input
+          type="file"
+          onChange={(e) => handleExcelFileUpload(e.target.files?.[0])}
+        />
+        <input
+          type="file"
+          onChange={(e) => handleJsonFileUpload(e.target.files?.[0])}
+        /> */}
       </Space>
 
       <Descriptions title="User Info">
         <Descriptions.Item label="总工作量">
-          {sumWorkloads(listAll)}
+          {sumWorkloads(taskList)}
         </Descriptions.Item>
         <Descriptions.Item label="已完成">
-          {sumWorkloads(listAll.filter((i) => i.status === Status.DONE))}
+          {sumWorkloads(taskList.filter((i) => i.status === Status.DONE))}
         </Descriptions.Item>
         <Descriptions.Item label="剩余">
-          {sumWorkloads(listAll.filter((i) => i.status !== Status.DONE))}
+          {sumWorkloads(taskList.filter((i) => i.status !== Status.DONE))}
         </Descriptions.Item>
       </Descriptions>
       <LineChart data={data} />
@@ -325,7 +360,7 @@ const BurnDownChart = (props: BurnDownChartProps) => {
           }
           onCreate={(value) => {
             console.log('🚀 ~ BurnDownChart ~ value:', value);
-            let tempList = [...listAll];
+            let tempList = [...taskList];
             tempList = tempList.map((i) => {
               if (i.id === curCard?.id) {
                 let tempDate = '';
@@ -344,7 +379,7 @@ const BurnDownChart = (props: BurnDownChartProps) => {
               return i;
             });
             if (curListEnum) {
-              setListAll(tempList);
+              setTaskList(tempList);
               setOpen(false);
             }
           }}

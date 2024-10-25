@@ -32,7 +32,8 @@
     "number-precision": "^1.6.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-day-picker": "^9.1.2",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
