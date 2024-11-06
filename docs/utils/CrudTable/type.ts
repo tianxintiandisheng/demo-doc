@@ -1,5 +1,5 @@
 export interface UserItem {
-  userId: number;
+  userId: string;
   name: string;
   age?: number;
   phone?: string;
@@ -7,3 +7,8 @@ export interface UserItem {
 }
 
 export type Values = Omit<UserItem, 'userId'>
+
+export enum ActionType {
+  ADD = 'ADD',
+  EDIT = 'EDIT',
+}

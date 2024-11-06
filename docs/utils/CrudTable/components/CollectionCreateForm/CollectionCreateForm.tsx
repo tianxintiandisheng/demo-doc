@@ -1,11 +1,13 @@
 import { Form, Input, InputNumber, Modal } from 'antd';
-import React from 'react';
-import { Values } from '../../type';
+import React, { useEffect } from 'react';
+import { ActionType, UserItem, Values } from '../../type';
 
 interface CollectionCreateFormProps {
   open: boolean;
   onCreate: (values: Values) => void;
   onCancel: () => void;
+  actionType: ActionType;
+  curItem?: UserItem;
 }
 
 const formItemLayout = {
@@ -16,14 +18,25 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
   open,
   onCreate,
   onCancel,
+  curItem,
+  actionType,
 }) => {
   const [form] = Form.useForm();
+  useEffect(() => {
+    if (actionType === ActionType.EDIT && curItem) {
+      form.setFieldsValue(curItem);
+    }
+    if (actionType === ActionType.ADD) {
+      form.resetFields();
+    }
+  }, [curItem?.userId]);
   return (
     <Modal
       open={open}
       title="新增"
       okText="确认"
       cancelText="取消"
+      destroyOnClose
       onCancel={onCancel}
       onOk={() => {
         form
@@ -52,16 +65,16 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
             },
           ]}
         >
-          <Input />
+          <Input placeholder="请输入" />
         </Form.Item>
         <Form.Item name="age" label="年龄">
           <InputNumber min={0} max={180} step={1} />
         </Form.Item>
         <Form.Item name="phone" label="手机号">
-          <Input style={{ width: '100%' }} />
+          <Input style={{ width: '100%' }} placeholder="请输入" />
         </Form.Item>
         <Form.Item name="remark" label="备注">
-          <Input type="textarea" maxLength={200} />
+          <Input type="textarea" maxLength={200} placeholder="请输入" />
         </Form.Item>
       </Form>
     </Modal>

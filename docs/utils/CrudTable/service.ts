@@ -1,5 +1,5 @@
 import { del, get, post, put } from './request';
-import { Values } from './type';
+import { Values ,UserItem} from './type';
 
 interface ResCommon {
   errCode?: number | string | null;
@@ -15,13 +15,6 @@ type ResAction<T = any> = ResCommon & {
   resultInfo?: boolean;
 };
 
-interface Item {
-  userId: number;
-  name: string;
-  age?: number;
-  phone?: string;
-  remark?: string;
-}
 
 /**
  * 列表常用的返回；，一般有页面尺寸，总数，列表数组
@@ -31,7 +24,7 @@ type ResGetList<T = any> = ResCommon & {
   resultInfo?: {
     pageNum: number;
     total: number;
-    records: Item[];
+    records: UserItem[];
   };
 };
 
@@ -51,7 +44,7 @@ export const deleteItem = (params: { id: string }): Promise<ResAction> =>
 /**
  * @function 根据id修改用户信息
  */
-export const editConfig = (params: {
+export const editItem = (params: {
   id: string;
   name: string;
 }): Promise<ResAction> => put('/api/item/edit', params);
