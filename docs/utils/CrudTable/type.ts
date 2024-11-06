@@ -5,3 +5,5 @@ export interface UserItem {
   phone?: string;
   remark?: string;
 }
+
+export type Values = Omit<UserItem, 'userId'>

@@ -1,4 +1,5 @@
 import { del, get, post, put } from './request';
+import { Values } from './type';
 
 interface ResCommon {
   errCode?: number | string | null;
@@ -38,9 +39,8 @@ type ResGetList<T = any> = ResCommon & {
  * @function 新增用户
  * @desc
  */
-export const addItem = (params: {
-  name: string; // 名称
-}): Promise<ResAction> => post('/api/item/add', params);
+export const addItem = (params: Values): Promise<ResAction> =>
+  post('/api/item/add', params);
 
 /**
  * @function 根据id删除用户

@@ -1,10 +1,11 @@
-import { Space, Table } from 'antd';
+import { Button, Input, Space, Table, message } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useState } from 'react';
-import './CrudTable.module.less';
-import { getConfigList } from './service';
-import { UserItem } from './type';
+import CollectionCreateForm from './components/CollectionCreateForm';
+import { addItem, getConfigList } from './service';
+import { UserItem, Values } from './type';
 
+const { Search } = Input;
 export interface CrudTableProps
   extends Omit<
     React.HTMLAttributes<HTMLDivElement>,
@@ -49,19 +50,23 @@ const CrudTable = (props: CrudTableProps) => {
   const { className = '', ...otherProps } = props;
   const [pageSize, setPageSize] = useState(10);
   const [pageNum, setPageNum] = useState(1);
+  const [keyword, setKeyword] = useState('');
+
   const [total, setTotal] = useState(0);
   const [list, setList] = useState<UserItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     queryList();
-  }, [pageSize, pageNum]);
+  }, [pageSize, pageNum, keyword]);
 
   const queryList = () => {
     setLoading(true);
     const params = {
       pageNum, // 页码
       pageSize, // 页大小
+      keyword, // 搜索关键词
     };
     getConfigList(params).then((res) => {
       const { success, resultInfo } = res;
@@ -74,9 +79,36 @@ const CrudTable = (props: CrudTableProps) => {
     });
   };
 
+  const onCreate = (values: Values) => {
+    console.log('Received values of form: ', values);
+    addItem(values).then((res) => {
+      if (res.success) {
+        message.success('操作成功');
+        queryList();
+      }
+    });
+    setOpen(false);
+  };
+
   return (
     <div className={`root_CrudTable${className}`} {...otherProps}>
-      <div className="buttonBox_CrudTable"></div>
+      <div className="buttonBox_CrudTable">
+        <Space style={{ marginBottom: 12 }}>
+          <Button
+            type="primary"
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            添加
+          </Button>
+          <Search
+            placeholder="输入名称进行搜索"
+            onSearch={(value: string) => setKeyword(value)}
+            style={{ width: 200 }}
+          />
+        </Space>
+      </div>
       <div className="content_CrudTable">
         <Table
           rowKey="userId"
@@ -93,6 +125,13 @@ const CrudTable = (props: CrudTableProps) => {
               setPageNum(page);
               setPageSize(size);
             },
+          }}
+        />
+        <CollectionCreateForm
+          open={open}
+          onCreate={onCreate}
+          onCancel={() => {
+            setOpen(false);
           }}
         />
       </div>
