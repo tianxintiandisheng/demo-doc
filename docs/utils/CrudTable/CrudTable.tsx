@@ -3,7 +3,7 @@ import type { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useState } from 'react';
 import CollectionCreateForm from './components/CollectionCreateForm';
 import { addItem, editItem, getConfigList ,deleteItem} from './service';
-import { ActionType, UserItem, Values } from './type';
+import { ActionType, Item, Values } from './type';
 
 const { Search } = Input;
 export interface CrudTableProps
@@ -18,10 +18,10 @@ const CrudTable = (props: CrudTableProps) => {
   const [pageNum, setPageNum] = useState(1);
   const [keyword, setKeyword] = useState('');
   const [actionType, setActionType] = useState<ActionType>(ActionType.ADD);
-  const [curItem, setCurItem] = useState<UserItem | undefined>();
+  const [curItem, setCurItem] = useState<Item | undefined>();
 
   const [total, setTotal] = useState(0);
-  const [list, setList] = useState<UserItem[]>([]);
+  const [list, setList] = useState<Item[]>([]);
 
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -30,7 +30,7 @@ const CrudTable = (props: CrudTableProps) => {
     queryList();
   }, [pageSize, pageNum, keyword]);
 
-  const columns: ColumnsType<UserItem> = [
+  const columns: ColumnsType<Item> = [
     {
       title: '姓名',
       dataIndex: 'name',
@@ -69,7 +69,7 @@ const CrudTable = (props: CrudTableProps) => {
           <Popconfirm
             title="确认要删除当前项吗?"
             onConfirm={() => {
-              deleteItem({id: record.userId}).then((res)=>{
+              deleteItem({id: record.id}).then((res)=>{
                 const { success, resultInfo } = res;
                 if (success && resultInfo) {
                   message.success('删除成功');
@@ -119,7 +119,7 @@ const CrudTable = (props: CrudTableProps) => {
   const onEdit = (values: Values) => {
     console.log('Received values of form: ', values);
     editItem({
-      id: (curItem as UserItem).userId,
+      id: (curItem as Item).id,
       ...values,
     }).then((res) => {
       if (res.success) {
@@ -153,7 +153,7 @@ const CrudTable = (props: CrudTableProps) => {
       </div>
       <div className="content_CrudTable">
         <Table
-          rowKey="userId"
+          rowKey="id"
           columns={columns}
           dataSource={list}
           loading={loading}

@@ -1,5 +1,5 @@
 import { del, get, post, put } from './request';
-import { Values ,UserItem} from './type';
+import { Values ,Item} from './type';
 
 interface ResCommon {
   errCode?: number | string | null;
@@ -24,33 +24,30 @@ type ResGetList<T = any> = ResCommon & {
   resultInfo?: {
     pageNum: number;
     total: number;
-    records: UserItem[];
+    records: Item[];
   };
 };
 
 /**
- * @function 新增用户
+ * @function 新增
  * @desc
  */
 export const addItem = (params: Values): Promise<ResAction> =>
   post('/api/item/add', params);
 
 /**
- * @function 根据id删除用户
+ * @function 根据id删除
  */
 export const deleteItem = (params: { id: string }): Promise<ResAction> =>
   del('/api/item/delete', params);
 
 /**
- * @function 根据id修改用户信息
+ * @function 根据id修改
  */
-export const editItem = (params: {
-  id: string;
-  name: string;
-}): Promise<ResAction> => put('/api/item/edit', params);
+export const editItem = (params:Item): Promise<ResAction> => put('/api/item/edit', params);
 
 /**
- * @function 查询用户列表
+ * @function 查询列表
  */
 export const getConfigList = (params: {
   pageNum: number;

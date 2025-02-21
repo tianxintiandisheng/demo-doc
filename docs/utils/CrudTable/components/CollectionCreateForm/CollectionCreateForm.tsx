@@ -1,13 +1,13 @@
 import { Form, Input, InputNumber, Modal } from 'antd';
 import React, { useEffect } from 'react';
-import { ActionType, UserItem, Values } from '../../type';
+import { ActionType, Item, Values } from '../../type';
 
 interface CollectionCreateFormProps {
   open: boolean;
   onCreate: (values: Values) => void;
   onCancel: () => void;
   actionType: ActionType;
-  curItem?: UserItem;
+  curItem: Item | undefined;
 }
 
 const formItemLayout = {
@@ -23,17 +23,19 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
 }) => {
   const [form] = Form.useForm();
   useEffect(() => {
-    if (actionType === ActionType.EDIT && curItem) {
-      form.setFieldsValue(curItem);
+    if (open) {
+      if (actionType === ActionType.EDIT && curItem) {
+        form.setFieldsValue(curItem);
+      }
+      if (actionType === ActionType.ADD) {
+        form.resetFields();
+      }
     }
-    if (actionType === ActionType.ADD) {
-      form.resetFields();
-    }
-  }, [curItem?.userId]);
+  }, [curItem?.id, open]);
   return (
     <Modal
       open={open}
-      title="新增"
+      title={actionType === ActionType.ADD ? '新增' : '删除'}
       okText="确认"
       cancelText="取消"
       destroyOnClose
