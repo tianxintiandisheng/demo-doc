@@ -6,10 +6,10 @@
 
 antd 官方提供的剪切组件,仅支持本地图片的剪切和上传
 
-```jsx
+```tsx
 import { Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
-import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
+import { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import React, { useState } from 'react';
 
 const App: React.FC = () => {

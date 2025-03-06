@@ -45,6 +45,9 @@
     "prettier": "^2.7.1",
     "standard-version": "^9.5.0"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "authors": [
     "tds"
   ]
