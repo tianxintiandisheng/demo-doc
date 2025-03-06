@@ -1,6 +1,6 @@
 {
   "name": "demo-doc",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "A static site based on dumi",
   "license": "MIT",
   "scripts": {

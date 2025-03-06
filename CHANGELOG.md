@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.3.0](https://github.com/tianxintiandisheng/demo-doc/compare/v2.2.0...v2.3.0) (2025-03-06)
+
+### ✏️ Documentation | 文档
+
+- **root:** readme 文档更新 ([b82b2a2](https://github.com/tianxintiandisheng/demo-doc/commit/b82b2a2f323d3f56939215450c68254bcdcefac8))
+
+### 📦‍ Build System | 打包构建
+
+- **root:** 修改安装方式,指定 node 版本大于 18 ([1a9d052](https://github.com/tianxintiandisheng/demo-doc/commit/1a9d052261c1c76eba430ccd84b63a4c51903920))
+
+### ✨ Features | 新功能
+
+- **crudtable:** 增删改查 table 完善 ([a16f370](https://github.com/tianxintiandisheng/demo-doc/commit/a16f3702bf37c07cc8eed6907862cdf95bc964b6))
+- **tools:** 燃尽图 编写生成图表数据方法 ([d625104](https://github.com/tianxintiandisheng/demo-doc/commit/d62510465fd8ae13552637ab7df9ee034b258ae7))
+- **tools:** 燃尽图 卡片可编辑完成时间和工作量 ([41a58ae](https://github.com/tianxintiandisheng/demo-doc/commit/41a58aef4da41a42d56a1b8ccf5e4bf2548dfeab))
+- **tools:** 燃尽图 为方便数据处理,待处理,处理中,已完成三个列表合并为一个 ([3a02e0d](https://github.com/tianxintiandisheng/demo-doc/commit/3a02e0d4ba98cc5c8d95a23575d6d0ade45e7dbb))
+- **tools:** 燃尽图 文案调整 ([e6c571a](https://github.com/tianxintiandisheng/demo-doc/commit/e6c571a0eb926e8cb0daf09e17307e8055221a84))
+- **tools:** 燃尽图 引入折线图 ([4db5240](https://github.com/tianxintiandisheng/demo-doc/commit/4db5240ed6e146ab5e5f7cb712dbf872e83fa5fd))
+- **tools:** 燃尽图 增加初始点数据,保证折线图从 x 轴起点开始 ([798cfd8](https://github.com/tianxintiandisheng/demo-doc/commit/798cfd825a64fabf888e4f2abf523a885b23e934))
+- **tools:** 燃尽图初始化 ([7fac70f](https://github.com/tianxintiandisheng/demo-doc/commit/7fac70fea427ccb7967d1a9e23e901984f67ed23))
+- **tools:** 实际线生成数据优化(只生成今天及以前的数据) ([703da59](https://github.com/tianxintiandisheng/demo-doc/commit/703da5969c5663ad818c49619c1ebf6db734e297))
+- **tools:** 添加下载 json,excel 和读取 json,excel 的功能 ([d83f023](https://github.com/tianxintiandisheng/demo-doc/commit/d83f023a4582b49c220e631433cf79966636bfa3))
+- **tools:** 完成日期设置组件修改为 select ([973cf8d](https://github.com/tianxintiandisheng/demo-doc/commit/973cf8d6a96895552d3611028901709f3b7f9e3e))
+- **utils:** 变量名称转换大写 ([f770d90](https://github.com/tianxintiandisheng/demo-doc/commit/f770d90c7ae17f5eadd8bffc064ca18e75e31885))
+- **utils:** crudTable 获取用户列表 ([7e353a1](https://github.com/tianxintiandisheng/demo-doc/commit/7e353a1146e6de7acd9473e48f43494a041b2295))
+- **utils:** crudTable 新增用户;搜索用户列表 ([fa4b8f8](https://github.com/tianxintiandisheng/demo-doc/commit/fa4b8f823e5d5cee48a926e392740e3d190b6719))
+- **utils:** crudTable-编辑;删除 ([2e612ca](https://github.com/tianxintiandisheng/demo-doc/commit/2e612cafd4bf583b5e921b9ee6957a8c86c97b92))
+- **utils:** hook state 不合并的另一种情况 ([dbec784](https://github.com/tianxintiandisheng/demo-doc/commit/dbec784d63c4f62a4c062366d3e982fe98c1f729))
+
 ## [2.2.0](https://github.com/tianxintiandisheng/demo-doc/compare/v2.1.0...v2.2.0) (2024-05-28)
 
 ### ✨ Features | 新功能
