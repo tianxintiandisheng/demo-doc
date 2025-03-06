@@ -18,12 +18,12 @@ export interface FileUploaderProps
 const FILE_TYPE_MAP = {
   json: {
     accept: '.json, application/json',
-    description: 'JSON 文件',
+    description: '上传 JSON 文件',
   },
   xlsx: {
     accept:
       '.xlsx, .xls, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel',
-    description: 'Excel 文件',
+    description: '上传 Excel 文件',
   },
 };
 
