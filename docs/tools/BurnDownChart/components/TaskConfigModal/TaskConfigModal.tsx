@@ -1,7 +1,8 @@
 import { Form, Input, InputNumber, Modal, Select } from 'antd';
 import moment from 'moment';
 import React, { useEffect } from 'react';
-import { CardItem, STATUS_LIST, Status } from '../../BurnDownChart';
+import { STATUS_LIST } from '../../BurnDownChart';
+import { CardItem, Status } from '../../type';
 import './TaskConfigModal.module.less';
 
 interface Values {
@@ -87,6 +88,28 @@ const TaskConfigModal = (props: TaskConfigModalProps) => {
                 label: 'title',
                 value: 'type',
               }}
+            />
+          </Form.Item>
+          <Form.Item name="owner" label="负责人">
+            <Select
+              options={[
+                {
+                  value: 'A',
+                  label: 'A',
+                },
+                {
+                  value: 'B',
+                  label: 'B',
+                },
+                {
+                  value: 'C',
+                  label: 'C',
+                },
+                {
+                  value: 'D',
+                  label: 'D',
+                },
+              ]}
             />
           </Form.Item>
           <Form.Item name="workload" label="工作量">

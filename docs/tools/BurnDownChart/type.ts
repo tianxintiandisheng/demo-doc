@@ -15,6 +15,7 @@ export interface CardItem {
   title: string; // 任务标题
   status: Status; // 任务状态
   description?: string; // 描述
+  owner?: string; // 负责人
   workload?: number; // 工作量
   dateDone?: string; // 完成日期；格式为 'YYYY-MM-DD'
 }

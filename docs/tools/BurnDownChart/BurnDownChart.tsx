@@ -7,6 +7,7 @@ import {
   Input,
   message,
   Space,
+  Tag,
 } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
@@ -165,7 +166,10 @@ const BurnDownChart = (props: BurnDownChartProps) => {
             setOpen(true);
           }}
         >
-          <div>{item.title}</div>
+          <div>
+            {item.owner && <Tag>{item.owner}</Tag>}
+            {item.title}
+          </div>
           <div>
             {item?.workload && <Badge count={item?.workload} color="#40a9ff" />}
           </div>
@@ -211,7 +215,7 @@ const BurnDownChart = (props: BurnDownChartProps) => {
               <Button
                 onClick={() => {
                   setWithAddForm(false);
-                  setSelected(undefined);
+                  // setSelected(undefined);
                 }}
               >
                 取消
@@ -266,7 +270,7 @@ const BurnDownChart = (props: BurnDownChartProps) => {
           onClick={() => {
             if (checkData(getDataObj())) {
               getCharData();
-            }else{
+            } else {
               message.error('工作周期或任务列表为空');
             }
           }}
@@ -334,7 +338,12 @@ const BurnDownChart = (props: BurnDownChartProps) => {
         /> */}
       </Space>
 
-      <Descriptions title="User Info">
+      <Descriptions
+        title="汇总"
+        style={{
+          padding: '16px 0',
+        }}
+      >
         <Descriptions.Item label="总工作量">
           {sumWorkloads(taskList)}
         </Descriptions.Item>
@@ -343,6 +352,12 @@ const BurnDownChart = (props: BurnDownChartProps) => {
         </Descriptions.Item>
         <Descriptions.Item label="剩余">
           {sumWorkloads(taskList.filter((i) => i.status !== Status.DONE))}
+        </Descriptions.Item>
+        <Descriptions.Item label="总工作日">
+          {selected?.length}
+        </Descriptions.Item>
+        <Descriptions.Item label="处理中">
+          {sumWorkloads(taskList.filter((i) => i.status === Status.DOING))}
         </Descriptions.Item>
       </Descriptions>
       <LineChart data={data} />
