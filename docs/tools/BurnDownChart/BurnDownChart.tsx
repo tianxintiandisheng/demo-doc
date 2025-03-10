@@ -194,14 +194,14 @@ const BurnDownChart = (props: BurnDownChartProps) => {
                 let tempList: CardItem[] = [...taskList];
                 tempList.push({
                   id: uuidv4(),
-                  title: values.tile,
+                  title: values.title,
                   status: curListEnum,
                 });
                 setTaskList(tempList);
               }
             }}
           >
-            <Form.Item name="tile" rules={[{ required: true }]}>
+            <Form.Item name="title" rules={[{ required: true }]}>
               <TextArea placeholder="请输入" rows={4} />
             </Form.Item>
             <Form.Item>
@@ -232,7 +232,12 @@ const BurnDownChart = (props: BurnDownChartProps) => {
         locale={zhCN}
         mode="multiple"
         selected={selected}
-        onSelect={setSelected}
+        onSelect={(selectedDay)=>{
+          if(Array.isArray(selectedDay)){
+            selectedDay.sort((a, b) => moment(a).diff(moment(b)));
+          }
+          setSelected(selectedDay)
+        }}
       />
       <Divider />
       <div className="list-content">
