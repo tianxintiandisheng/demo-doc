@@ -3,7 +3,7 @@ import { Button, Upload, message } from 'antd';
 import type { UploadFile } from 'antd/es/upload/interface';
 import React, { useState } from 'react';
 import { DataObj } from '../../type.ts';
-import { handleJsonFileUpload } from '../../utils';
+import { handleExcelFileUpload, handleJsonFileUpload } from '../../utils';
 
 export interface FileUploaderProps
   extends Omit<
@@ -49,6 +49,9 @@ const FileUploader = (props: FileUploaderProps) => {
       //   }
       // };
       // reader.readAsText(file);
+    }
+    if (fileType === 'xlsx') {
+      handleExcelFileUpload(onUploadSuccess, file);
     }
 
     // 更新文件列表
