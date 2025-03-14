@@ -1,6 +1,7 @@
+import moment from 'moment';
 import { customAlphabet } from 'nanoid';
 import * as XLSX from 'xlsx';
-import { CardItem, DataObj, Status } from '../type.ts';
+import { CardItem, DataObj } from '../type.ts';
 
 // 配置短ID生成器（5位，排除易混淆字符）
 const generateShortId = customAlphabet('23456789abcdefghjkmnpqrstuvwxyz', 5);
@@ -99,67 +100,109 @@ const saveAsExcelFile = (data: DataObj) => {
 };
 
 /**
- * @function 处理上传的 Excel 文件并解析为 DataObj
- * @param {File} file  文件数据
- * @param {function} onSuccess 解析成功的回调
+ * @function 处理上传的Excel文件并解析为DataObj
+ * @description
+ * 1. 读取Excel文件的两个sheet：
+ *    - Sheet1: 任务列表数据（自动处理日期格式和空值）
+ *    - Sheet2: 纯日期列表数据（要求第一列为日期，支持文本/日期格式）
+ * 2. 自动生成唯一ID逻辑
+ * 3. 数据清洗和格式标准化处理
+ *
+ * @param {function} onSuccess - 解析成功后的回调函数，接收 DataObj 格式数据
+ * @param {File} [file] - 上传的Excel文件对象
+ *
+ * @typedef DataObj
+ * @property {CardItem[]} taskList - 任务列表（来自Sheet1）
+ * @property {string[]} dateList - 日期列表（来自Sheet2第一列）
  */
-const handleExcelFileUpload = (onSuccess, file?: File) => {
-  // const file = event.target.files[0];
+const handleExcelFileUpload = (
+  onSuccess: (data: DataObj) => void,
+  file?: File,
+) => {
   if (!file) return;
 
   const reader = new FileReader();
   reader.onload = (e) => {
-    const arrayBuffer = e?.target?.result as ArrayBuffer;
+    // ================= 文件读取和解析 =================
+    const arrayBuffer = e.target?.result as ArrayBuffer;
     const data = new Uint8Array(arrayBuffer);
+    // 使用 xlsx 库解析二进制数据
     const workbook = XLSX.read(data, { type: 'array' });
 
-    // 读取 Sheet1
-    const sheet1Name = workbook.SheetNames[0];
-    const sheet1 = workbook.Sheets[sheet1Name];
-    const listAllJson: string[][] = XLSX.utils.sheet_to_json(sheet1, {
-      header: 1,
+    // ================= Sheet1处理（任务列表） =================
+    const sheet1 = workbook.Sheets[workbook.SheetNames[0]];
+    const listAllJson: any[][] = XLSX.utils.sheet_to_json(sheet1, {
+      header: 1, // 以数组形式返回数据
+      raw: false, // 自动转换日期/公式为字符串
+      defval: null, // 空单元格默认赋值为null（便于后续过滤）
     });
-    const headers = listAllJson[0] as string[];
-    const taskList: CardItem[] = listAllJson.slice(1).map((row) => {
-      const item: any = {};
-      for (let i = 0; i < headers.length; i++) {
-        const key = headers[i];
-        const value = row[i];
-        if (key === 'status') {
-          item[key] = value as Status;
-        } else if (value !== undefined && value !== null) {
-          item[key] = value;
+
+    // 过滤有效行（至少有一个非空单元格的行）
+    const validRows = listAllJson.filter((row) =>
+      row.some((cell) => cell !== null && cell !== undefined),
+    );
+
+    // 安全获取表头（空文件保护）
+    const headers = (validRows || [])[0].map(String); // 强制转为字符串避免类型问题
+
+    // 任务列表数据处理流程
+    const taskList: CardItem[] = validRows
+      .slice(1) // 跳过表头行
+      .map((row) => {
+        const item: any = {};
+        // 列遍历（动态适配Excel列顺序）
+        for (let i = 0; i < headers.length; i++) {
+          const key = headers[i];
+          const value = row[i];
+          // 有效值处理（过滤null/undefined）
+          if (key && value !== null && value !== undefined) {
+            if (key === 'dateDone') {
+              const date = moment(value);
+              item[key] = date.format('YYYY/MM/DD');
+            } else if (key === 'workload') {
+              item[key] = Number(value);
+            } else {
+              item[key] = value;
+            }
+          }
         }
-      }
-      // 自动生成ID逻辑
-      if (
-        !item.id || // 如果ID字段不存在
-        (typeof item.id === 'string' && item.id.trim() === '') || // 或为空字符串
-        item.id.toString().trim() === '' // 或其他类型转字符串后为空
-      ) {
-        item.id = generateShortId(); // 生成唯一短ID
-      }
-      return item as CardItem;
-    });
 
-    // 读取 Sheet2
-    const sheet2Name = workbook.SheetNames[1];
-    const sheet2 = workbook.Sheets[sheet2Name];
-    const dateListJson: string[][] = XLSX.utils.sheet_to_json(sheet2, {
+        // ID生成逻辑（兼容空值/空字符串/无效值）
+        if (!item.id || String(item.id).trim() === '') {
+          item.id = generateShortId(); // 生成5位安全短ID
+        }
+        return item;
+      })
+      .filter((item) => Object.keys(item).length > 0); // 过滤完全空的行
+
+    // ================= Sheet2处理（日期列表） =================
+    const sheet2 = workbook.Sheets[workbook.SheetNames[1]];
+    const dateListJson: any[][] = XLSX.utils.sheet_to_json(sheet2, {
       header: 1,
+      raw: false, // 确保日期自动转为字符串（如"2023/03/15"）
+      defval: '', // 空单元格赋值为空字符串
     });
-    const dateList: string[] = dateListJson.slice(1).map((row) => row[0]);
 
-    // 组合成 DataObj
+    // 日期数据清洗流程
+    const dateList: string[] = dateListJson
+      .slice(1) // 跳过表头行
+      .map((row) => moment(row[0]).format('YYYY/MM/DD')) // 取第一列并标准化为字符串
+      .filter((dateStr) => dateStr !== ''); // 过滤空日期
+
+    // ================= 结果输出 =================
     const dataObj: DataObj = {
-      taskList,
-      dateList,
+      taskList, // 处理后的任务数据
+      dateList, // 清洗后的日期列表
     };
-    console.log('🚀 ~ handleExcelFileUpload ~ dataObj:', dataObj);
-    onSuccess(dataObj);
+    console.log('处理结果验证:', {
+      taskListSample: taskList.slice(0, 3), // 输出前3项样本
+      dateListSample: dateList.slice(0, 5), // 输出前5个日期
+    });
+    console.log('处理结果验证:', dataObj);
+    onSuccess(dataObj); // 触发回调传递数据
   };
 
-  // 读取文件内容为 ArrayBuffer
+  // 启动文件读取（ArrayBuffer格式）
   reader.readAsArrayBuffer(file);
 };
 
