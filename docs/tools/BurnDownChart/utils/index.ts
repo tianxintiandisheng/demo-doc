@@ -1,5 +1,9 @@
+import { customAlphabet } from 'nanoid';
 import * as XLSX from 'xlsx';
 import { CardItem, DataObj, Status } from '../type.ts';
+
+// 配置短ID生成器（5位，排除易混淆字符）
+const generateShortId = customAlphabet('23456789abcdefghjkmnpqrstuvwxyz', 5);
 
 /**
  * 将 DataObj 保存为 JSON 文件
@@ -117,7 +121,7 @@ const handleExcelFileUpload = (onSuccess, file?: File) => {
     });
     const headers = listAllJson[0] as string[];
     const taskList: CardItem[] = listAllJson.slice(1).map((row) => {
-      const item = {};
+      const item: any = {};
       for (let i = 0; i < headers.length; i++) {
         const key = headers[i];
         const value = row[i];
@@ -126,6 +130,14 @@ const handleExcelFileUpload = (onSuccess, file?: File) => {
         } else if (value !== undefined && value !== null) {
           item[key] = value;
         }
+      }
+      // 自动生成ID逻辑
+      if (
+        !item.id || // 如果ID字段不存在
+        (typeof item.id === 'string' && item.id.trim() === '') || // 或为空字符串
+        item.id.toString().trim() === '' // 或其他类型转字符串后为空
+      ) {
+        item.id = generateShortId(); // 生成唯一短ID
       }
       return item as CardItem;
     });
@@ -143,6 +155,7 @@ const handleExcelFileUpload = (onSuccess, file?: File) => {
       taskList,
       dateList,
     };
+    console.log('🚀 ~ handleExcelFileUpload ~ dataObj:', dataObj);
     onSuccess(dataObj);
   };
 
