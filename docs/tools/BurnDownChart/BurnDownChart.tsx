@@ -14,7 +14,7 @@ import React, { useState } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { zhCN } from 'react-day-picker/locale';
 import 'react-day-picker/style.css';
-import { v4 as uuidv4 } from 'uuid';
+import { customAlphabet } from 'nanoid';
 import './BurnDownChart.less';
 import FileUploader from './components/FileUploader';
 import LineChart from './components/LineChart';
@@ -23,6 +23,9 @@ import { CardItem, DataObj, Plot, Status } from './type.ts';
 import { checkData, saveAsExcelFile, saveAsJsonFile } from './utils';
 
 const { TextArea } = Input;
+
+// 配置 5 位短ID（移除易混淆字符）
+const shortNanoId = customAlphabet('23456789abcdefghjkmnpqrstuvwxyz', 5); // 5位
 
 export interface BurnDownChartProps
   extends Omit<
@@ -193,7 +196,7 @@ const BurnDownChart = (props: BurnDownChartProps) => {
               if (curListEnum) {
                 let tempList: CardItem[] = [...taskList];
                 tempList.push({
-                  id: uuidv4(),
+                  id: shortNanoId(),
                   title: values.title,
                   status: curListEnum,
                 });
